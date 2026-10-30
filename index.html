@@ -438,7 +438,7 @@
                             class="w-full theme-input rounded-xl px-3 py-2.5 text-xs outline-none">
                             <option value="onetime">Key Riêng (Tự Xóa Khi Lấy)</option>
                             <option value="1h">Key 1H (Dùng Trong 1 Giờ)</option>
-                            <option value="shared">Key Dùng Chung 24H</option>
+                            <option value="shared">Key 1 Ngày</option>
                         </select>
                     </div>
                     <div>
@@ -716,7 +716,7 @@
                             <span class="px-2 py-0.5 rounded-md bg-gradient-to-r from-indigo-600 to-pink-600 text-white font-extrabold text-[10px] uppercase">System Admin</span>
                             <h2 class="text-lg sm:text-xl font-extrabold theme-text-main">Quản Trị Hệ Thống & Tùy Chỉnh Web</h2>
                         </div>
-                        <p class="text-xs theme-text-muted mt-0.5">Tùy chỉnh trang chủ, số bước vượt link, kho Key (1 Lần / 1H / 24H) và Ảnh Banner cho từng ô Game</p>
+                        <p class="text-xs theme-text-muted mt-0.5">Tùy chỉnh trang chủ, số bước vượt link, kho Key (1 Lần / 1H / 1 Ngày) và Ảnh Banner cho từng ô Game</p>
                     </div>
                 </div>
 
@@ -996,7 +996,7 @@
                                     class="w-full theme-input rounded-xl px-3 py-2.5 text-xs outline-none">
                                     <option value="onetime">Key Riêng (Tự Xóa Khi Lấy)</option>
                                     <option value="1h">Key 1H (Dùng Trong 1 Giờ)</option>
-                                    <option value="shared">Key Dùng Chung 24H</option>
+                                    <option value="shared">Key 1 Ngày</option>
                                 </select>
                             </div>
                             <div>
@@ -1355,7 +1355,7 @@
 
         function getKeyModeLabel(keyType) {
             if (keyType === '1h') return 'Key 1H';
-            if (keyType === 'shared' || keyType === '24h') return 'Key 24H';
+            if (keyType === 'shared' || keyType === '24h' || keyType === '1d') return 'Key 1 Ngày';
             return 'Key 1 Lần';
         }
 
@@ -1615,7 +1615,7 @@
                 id: 'game_roblox_exec',
                 name: 'Roblox Blox Fruits Script Hub',
                 category: 'Sandbox / RPG',
-                desc: 'Key 24 giờ toàn cầu không giới hạn lượt nhập\nHỗ trợ Auto Farm Mastery, Sea Event & Auto Raid\nTương thích mọi giả lập & điện thoại',
+                desc: 'Key 1 Ngày toàn cầu không giới hạn lượt nhập\nHỗ trợ Auto Farm Mastery, Sea Event & Auto Raid\nTương thích mọi giả lập & điện thoại',
                 icon: 'fa-cube',
                 imageUrl: '',
                 bannerUrl: DEFAULT_BANNERS.game_roblox_exec,
@@ -1624,7 +1624,7 @@
                 keyType: 'shared',
                 active: true,
                 keys: [
-                    'SAKURA-RBX24H-GLOBAL-2026'
+                    'SAKURA-RBX1D-GLOBAL-2026'
                 ]
             },
             {
