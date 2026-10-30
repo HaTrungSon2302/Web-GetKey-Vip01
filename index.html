@@ -1,0 +1,3077 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SakuraKey - Cổng Nhận Key Game Tự Động</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* =========================================================
+           AURORA GAMING THEME (VIBRANT, COLORFUL, BRIGHT & ENERGETIC)
+           ========================================================= */
+        :root {
+            --bg-main: #f4f7ff;
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --text-muted: #64748b;
+            --panel-bg: rgba(255, 255, 255, 0.88);
+            --panel-border: rgba(99, 102, 241, 0.18);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --card-border: rgba(99, 102, 241, 0.16);
+            --input-bg: #f8faff;
+            --input-border: rgba(99, 102, 241, 0.25);
+            --sub-box-bg: #eef2ff;
+        }
+
+        body.aurora-neon-mode {
+            --bg-main: #0b0f24;
+            --text-main: #f8fafc;
+            --text-sub: #cbd5e1;
+            --text-muted: #94a3b8;
+            --panel-bg: rgba(19, 25, 54, 0.86);
+            --panel-border: rgba(139, 92, 246, 0.28);
+            --card-bg: rgba(23, 30, 64, 0.92);
+            --card-border: rgba(99, 102, 241, 0.26);
+            --input-bg: #111736;
+            --input-border: rgba(139, 92, 246, 0.35);
+            --sub-box-bg: rgba(15, 20, 45, 0.85);
+        }
+
+        body {
+            background-color: var(--bg-main);
+            background-image: 
+                radial-gradient(at 10% 5%, rgba(99, 102, 241, 0.18) 0px, transparent 45%),
+                radial-gradient(at 90% 10%, rgba(236, 72, 153, 0.15) 0px, transparent 45%),
+                radial-gradient(at 50% 95%, rgba(6, 182, 212, 0.15) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.aurora-neon-mode {
+            background-image: 
+                radial-gradient(at 12% 8%, rgba(99, 102, 241, 0.28) 0px, transparent 48%),
+                radial-gradient(at 88% 12%, rgba(236, 72, 153, 0.22) 0px, transparent 45%),
+                radial-gradient(at 50% 92%, rgba(6, 182, 212, 0.20) 0px, transparent 52%);
+        }
+
+        .no-capitalize {
+            text-transform: none !important;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(99, 102, 241, 0.06);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #6366f1, #ec4899);
+            border-radius: 9999px;
+        }
+
+        /* Colorful Glass Containers */
+        .glass-panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--panel-border);
+            box-shadow: 0 14px 36px -12px rgba(79, 70, 229, 0.12);
+        }
+
+        body.aurora-neon-mode .glass-panel {
+            box-shadow: 0 18px 42px -12px rgba(0, 0, 0, 0.55), 0 0 28px -10px rgba(139, 92, 246, 0.2);
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 12px 30px -10px rgba(79, 70, 229, 0.1);
+            transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease, box-shadow 0.28s ease;
+            animation: panel-enter 0.35s ease both;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(99, 102, 241, 0.55);
+            box-shadow: 0 20px 40px -12px rgba(99, 102, 241, 0.24), 0 0 24px -6px rgba(236, 72, 153, 0.16);
+            transform: translateY(-4px);
+        }
+
+        /* Vibrant Gradient Primary Button */
+        .vibrant-primary-btn {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 20px -4px rgba(124, 58, 237, 0.45);
+            transition: all 0.22s ease;
+        }
+
+        .vibrant-primary-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #4338ca 0%, #6d28d9 50%, #db2777 100%);
+            box-shadow: 0 12px 26px -4px rgba(236, 72, 153, 0.55);
+            transform: translateY(-1px);
+        }
+
+        .vibrant-primary-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        /* Secondary Colorful Button */
+        .vibrant-secondary-btn {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--text-main);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            transition: all 0.2s ease;
+        }
+
+        .vibrant-secondary-btn:hover {
+            background: rgba(99, 102, 241, 0.18);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .theme-subbox {
+            background-color: var(--sub-box-bg);
+            border: 1px solid var(--panel-border);
+        }
+
+        .theme-input {
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            border: 1px solid var(--input-border);
+        }
+
+        .theme-input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .theme-text-main {
+            color: var(--text-main);
+        }
+
+        .theme-text-sub {
+            color: var(--text-sub);
+        }
+
+        .theme-text-muted {
+            color: var(--text-muted);
+        }
+
+        /* Subtle grid pattern overlay */
+        .bg-grid-pattern {
+            background-size: 32px 32px;
+            background-image: 
+                linear-gradient(to right, rgba(99, 102, 241, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
+        }
+
+        @keyframes panel-enter {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative bg-grid-pattern">
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="fixed top-5 right-4 z-50 flex flex-col gap-2.5 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+    <!-- =====================================================
+         USER VERIFICATION & KEY REVEAL MODAL (VIBRANT)
+         ===================================================== -->
+    <div id="userKeyModal" class="fixed inset-0 z-40 hidden items-center justify-center bg-slate-950/70 backdrop-blur-md p-4">
+        <div class="glass-panel rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative overflow-hidden">
+            <!-- Top decorative rainbow bar -->
+            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+
+            <!-- Modal Header -->
+            <div class="flex items-start justify-between gap-4 mb-6">
+                <div class="flex items-center gap-3.5">
+                    <div id="modalGameIcon" class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center text-xl shrink-0 overflow-hidden shadow-md">
+                        <i class="fa-solid fa-gamepad"></i>
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-extrabold uppercase tracking-widest text-indigo-500 block" id="modalTopLabel">Cổng Cấp Phát Key</span>
+                        <h3 id="modalGameTitle" class="text-lg sm:text-xl font-extrabold theme-text-main">Tên Game</h3>
+                    </div>
+                </div>
+                <button onclick="closeUserKeyModal()" class="w-8 h-8 rounded-xl vibrant-secondary-btn flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Progress Stepper inside Modal -->
+            <div id="modalStepper" class="mb-6"></div>
+
+            <!-- STATE 1: READY TO GO TO SHORTLINK -->
+            <div id="modalStepActionState" class="space-y-5">
+                <div class="theme-subbox rounded-2xl p-4 space-y-2.5">
+                    <div class="flex items-center justify-between text-xs">
+                        <span id="modalStepBadge" class="px-3 py-0.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-extrabold">
+                            Bước 1 / 2
+                        </span>
+                        <span class="theme-text-muted font-mono text-[11px] no-capitalize" id="modalSessionCode">ID: ...</span>
+                    </div>
+                    <h4 id="modalInstructionTitle" class="text-sm sm:text-base font-bold theme-text-main pt-1">
+                        Xác Nhận Liên Kết Để Mở Khóa Key
+                    </h4>
+                    <p id="modalInstructionSub" class="text-xs theme-text-sub leading-relaxed">
+                        Nhấn vào nút bên dưới để chuyển đến trang liên kết tài trợ. Sau khi hoàn tất trên trang đích, hệ thống sẽ tự động chuyển bạn quay về đây để nhận Key.
+                    </p>
+                </div>
+
+                <button id="modalProceedBtn" onclick="handleProceedToShortlink()"
+                    class="w-full py-3.5 px-5 rounded-2xl vibrant-primary-btn font-extrabold text-sm flex items-center justify-center gap-2.5 transition transform active:scale-[0.99]">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    <span id="modalProceedBtnText">Tiếp Tục Đến Trang Liên Kết</span>
+                </button>
+            </div>
+
+            <!-- STATE 2: SESSION EXPIRED / INVALID NOTICE -->
+            <div id="modalSessionErrorState" class="hidden space-y-5">
+                <div class="theme-subbox rounded-2xl p-5 text-center space-y-2.5">
+                    <div class="w-12 h-12 rounded-2xl bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-500 text-xl mx-auto">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+                    <h4 class="text-base font-bold theme-text-main">Phiên Lấy Mã Không Hợp Lệ</h4>
+                    <p id="modalErrorGenericMessage" class="text-xs theme-text-sub leading-relaxed">
+                        Phiên lấy mã không hợp lệ, chưa hoàn tất đủ thời gian hoặc đã hết hạn. Vui lòng thực hiện lại từ đầu.
+                    </p>
+                </div>
+
+                <button onclick="restartCurrentGameSession()"
+                    class="w-full py-3.5 px-5 rounded-2xl vibrant-primary-btn font-extrabold text-sm flex items-center justify-center gap-2 transition">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <span>Thực Hiện Lại Từ Đầu</span>
+                </button>
+            </div>
+
+            <!-- STATE 3: KEY UNLOCKED SUCCESSFULLY -->
+            <div id="modalKeySuccessState" class="hidden space-y-5">
+                <div class="theme-subbox rounded-2xl p-5 text-center space-y-3.5 border-2 border-emerald-500/40">
+                    <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-500 text-white text-xs font-extrabold shadow-sm">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span id="modalSuccessBadgeText">Hoàn Tất Xác Thực</span>
+                    </div>
+                    <p class="text-xs theme-text-sub" id="modalKeyDurationNote">Mã Key kích hoạt của bạn đã sẵn sàng sử dụng:</p>
+
+                    <div class="theme-input rounded-xl p-3.5 font-mono text-base sm:text-lg font-extrabold text-indigo-600 dark:text-indigo-300 tracking-wider select-all break-all no-capitalize" id="modalUnlockedKeyText">
+                        KEY-XXXX-XXXX
+                    </div>
+
+                    <button onclick="copyModalKey()"
+                        class="w-full py-3 px-4 rounded-xl vibrant-primary-btn font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition">
+                        <i class="fa-regular fa-copy"></i>
+                        <span id="modalCopyBtnLabel">Sao Chép Mã Key</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         HIDDEN SYSTEM AUTH PORTAL MODAL (SECRET ADMIN LOGIN)
+         ===================================================== -->
+    <div id="adminLoginModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/75 backdrop-blur-lg p-4">
+        <div class="glass-panel rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+            <button onclick="closeAdminLoginModal()" class="absolute top-4 right-4 w-8 h-8 rounded-xl vibrant-secondary-btn flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="flex items-center gap-3.5 mb-6">
+                <div class="w-12 h-12 rounded-2xl vibrant-primary-btn flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-terminal"></i>
+                </div>
+                <div>
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-indigo-500 font-bold block">System Gateway</span>
+                    <h3 class="text-lg font-extrabold theme-text-main">Cổng Xác Thực Hệ Thống</h3>
+                </div>
+            </div>
+
+            <form onsubmit="event.preventDefault(); submitAdminSecretLogin();" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold theme-text-sub mb-1.5">Tài Khoản Định Danh</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center theme-text-muted">
+                            <i class="fa-regular fa-user text-xs"></i>
+                        </span>
+                        <input type="text" id="adminUsernameInput" value="Administrator" required
+                            class="w-full theme-input rounded-xl pl-9 pr-4 py-2.5 text-xs sm:text-sm outline-none transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold theme-text-sub mb-1.5">Mật Khẩu Quản Trị (Secret Key)</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center theme-text-muted">
+                            <i class="fa-solid fa-key text-xs"></i>
+                        </span>
+                        <input type="password" id="adminSecretInput" placeholder="Mặc định: admin123" required
+                            class="w-full theme-input rounded-xl pl-9 pr-10 py-2.5 text-xs sm:text-sm font-mono outline-none transition no-capitalize">
+                        <button type="button" onclick="toggleSecretVisibility()" class="absolute inset-y-0 right-0 pr-3.5 flex items-center theme-text-muted hover:text-indigo-500">
+                            <i id="secretEyeIcon" class="fa-regular fa-eye text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between text-xs theme-text-sub pt-1">
+                    <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+                        <input type="checkbox" id="adminRememberSession" checked class="accent-indigo-600 rounded">
+                        <span>Duy trì phiên đăng nhập</span>
+                    </label>
+                </div>
+
+                <button type="submit"
+                    class="w-full py-3 rounded-xl vibrant-primary-btn font-extrabold text-xs sm:text-sm transition flex items-center justify-center gap-2 mt-2">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Mở Bảng Điều Khiển</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         ADMIN EDIT GAME DETAILS, BANNER & ICON MODAL
+         ===================================================== -->
+    <div id="editGameModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/75 backdrop-blur-md p-4">
+        <div class="glass-panel rounded-3xl max-w-xl w-full p-6 shadow-2xl max-h-[92vh] overflow-y-auto relative">
+            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+            <div class="flex items-center justify-between mb-4 border-b border-indigo-500/15 pb-3">
+                <div>
+                    <h3 class="text-lg font-extrabold theme-text-main">Chỉnh Sửa Ô Game, Ảnh Banner & Link Tải</h3>
+                    <p class="text-xs theme-text-muted">Thay đổi tên, chế độ Key, Link Tải Xuống và Ảnh Banner hiển thị trọn vẹn</p>
+                </div>
+                <button onclick="closeEditGameModal()" class="w-8 h-8 rounded-xl vibrant-secondary-btn flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <input type="hidden" id="editModalGameId">
+
+            <div class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold theme-text-sub mb-1">Tên Game / Bản Cập Nhật:</label>
+                        <input type="text" id="editModalGameName"
+                            class="w-full theme-input rounded-xl px-3.5 py-2.5 text-xs sm:text-sm outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold theme-text-sub mb-1">Danh Mục (Nhãn Nhỏ):</label>
+                        <input type="text" id="editModalGameCategory" placeholder="VD: Battle Royale / VIP Mod"
+                            class="w-full theme-input rounded-xl px-3.5 py-2.5 text-xs sm:text-sm outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold theme-text-sub mb-1">Mô Tả Ngắn (Ngăn cách bằng dấu ; để tạo nhiều dòng tích xanh):</label>
+                    <input type="text" id="editModalGameDesc" placeholder="VD: Hỗ trợ tâm ngắm mượt; Tối ưu FPS; An toàn tài khoản"
+                        class="w-full theme-input rounded-xl px-3.5 py-2.5 text-xs outline-none">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold theme-text-sub mb-1">
+                            <i class="fa-solid fa-download text-emerald-500 mr-1"></i>Link Tải Xuống (File / Menu / APK):
+                        </label>
+                        <input type="text" id="editModalGameDownloadUrl" placeholder="https://drive.google.com/... hoặc link tải file"
+                            class="w-full theme-input rounded-xl px-3.5 py-2.5 text-xs outline-none no-capitalize">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold theme-text-sub mb-1">Chế Độ Hiển Thị Ảnh Banner:</label>
+                        <select id="editModalGameBannerFit" onchange="previewEditGameBanner()"
+                            class="w-full theme-input rounded-xl px-3 py-2.5 text-xs outline-none">
+                            <option value="contain">Hiển Thị Trọn Vẹn Toàn Bộ Ảnh (Không Cắt)</option>
+                            <option value="cover">Lấp Đầy Khung Ngang (Cover)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold theme-text-sub mb-1">Chế Độ Cấp Key:</label>
+                        <select id="editModalGameKeyType"
+                            class="w-full theme-input rounded-xl px-3 py-2.5 text-xs outline-none">
+                            <option value="onetime">Key Riêng (Tự Xóa Khi Lấy)</option>
+                            <option value="1h">Key 1H (Dùng Trong 1 Giờ)</option>
+                            <option value="shared">Key Dùng Chung 24H</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold theme-text-sub mb-1">Chọn Biểu Tượng Có Sẵn:</label>
+                        <select id="editModalGameIcon" onchange="previewEditGameAvatar()"
+                            class="w-full theme-input rounded-xl px-3 py-2.5 text-xs outline-none">
+                            <option value="fa-fire">🔥 Ngọn Lửa (FPS / Battle)</option>
+                            <option value="fa-bolt">⚡ Tia Chớp (Tốc Độ / Hack)</option>
+                            <option value="fa-shield-halved">🛡️ Khiên Bảo Vệ (Anti-Ban)</option>
+                            <option value="fa-dragon">🐉 Rồng (MOBA / Arena)</option>
+                            <option value="fa-cube">🧊 Khối Vuông (Sandbox / Blox)</option>
+                            <option value="fa-crosshairs">🎯 Tâm Ngắm (Shooter)</option>
+                            <option value="fa-crown">👑 Vương Miện (VIP Menu)</option>
+                            <option value="fa-gem">💎 Kim Cương (Premium)</option>
+                            <option value="fa-rocket">🚀 Tên Lửa (Boost FPS)</option>
+                            <option value="fa-skull">💀 Đầu Lâu (Boss / Raid)</option>
+                            <option value="fa-wand-sparkles">✨ Phép Thuật (RPG / Anime)</option>
+                            <option value="fa-gamepad">🎮 Tay Cầm Game Chung</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- BANNER IMAGE CUSTOMIZATION FOR THIS CARD -->
+                <div class="theme-subbox rounded-2xl p-4 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <label class="block text-xs font-extrabold theme-text-main">
+                                <i class="fa-regular fa-image text-indigo-500 mr-1"></i>Ảnh Banner Nền Của Ô Game (Chuẩn Kích Thước Màn Hình Ngang)
+                            </label>
+                            <p class="text-[11px] theme-text-muted">Chứa trọn vẹn toàn bộ bức ảnh chụp màn hình game (1280x593 / 16:9) không bị mất góc</p>
+                        </div>
+                    </div>
+
+                    <!-- Live Banner Preview -->
+                    <div id="editModalBannerPreview" class="w-full aspect-[1280/593] rounded-xl overflow-hidden bg-slate-950 relative flex items-center justify-center shadow-inner border border-indigo-500/25">
+                        <span class="text-xs font-bold text-white/90">Xem trước Banner</span>
+                    </div>
+
+                    <input type="text" id="editModalGameBannerUrl" oninput="previewEditGameBanner()"
+                        placeholder="Dán Link Ảnh Banner (https://...) Hoặc Tải Ảnh Từ Máy Bên Dưới"
+                        class="w-full theme-input rounded-xl px-3.5 py-2 text-xs outline-none no-capitalize">
+
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <label class="cursor-pointer px-3.5 py-2 rounded-xl vibrant-primary-btn text-xs font-bold transition inline-flex items-center gap-1.5">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <span>Tải Ảnh Banner Từ Máy</span>
+                            <input type="file" accept="image/*" class="hidden" onchange="handleBannerFileUpload(this, 'editModalGameBannerUrl', 'editModalBannerPreview')">
+                        </label>
+                        <button type="button" onclick="clearEditGameBanner()" class="px-3 py-2 rounded-xl vibrant-secondary-btn text-xs font-semibold transition">
+                            Xóa Banner (Dùng Nền Gradient)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Custom Image URL or File Upload for Game Icon Box -->
+                <div class="theme-subbox rounded-2xl p-4 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <label class="block text-xs font-extrabold theme-text-main">Tùy Chỉnh Ảnh Icon Nhỏ (Logo Của Game)</label>
+                            <p class="text-[11px] theme-text-muted">Dán link ảnh hoặc tải ảnh vuông từ máy (Để trống nếu dùng Icon ở trên)</p>
+                        </div>
+                        <div id="editModalAvatarPreview" class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xl shrink-0 overflow-hidden shadow">
+                            <i class="fa-solid fa-fire"></i>
+                        </div>
+                    </div>
+
+                    <input type="text" id="editModalGameImageUrl" oninput="previewEditGameAvatar()"
+                        placeholder="Dán Link Ảnh Icon (https://...) Hoặc Tải Ảnh Bên Dưới"
+                        class="w-full theme-input rounded-xl px-3.5 py-2 text-xs outline-none no-capitalize">
+
+                    <div class="flex items-center justify-between gap-2">
+                        <label class="cursor-pointer px-3.5 py-2 rounded-xl vibrant-secondary-btn text-xs font-bold transition inline-flex items-center gap-1.5">
+                            <i class="fa-solid fa-upload"></i>
+                            <span>Tải Ảnh Icon Từ Máy</span>
+                            <input type="file" accept="image/*" class="hidden" onchange="handleImageFileUpload(this, 'editModalGameImageUrl', 'editModalAvatarPreview')">
+                        </label>
+                        <button type="button" onclick="clearEditGameImage()" class="px-3 py-2 rounded-xl vibrant-secondary-btn text-xs font-semibold transition">
+                            Xóa Ảnh (Dùng Icon)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2.5 mt-6">
+                <button onclick="closeEditGameModal()" class="px-4 py-2.5 rounded-xl vibrant-secondary-btn text-xs font-semibold">Hủy Bỏ</button>
+                <button onclick="saveEditGameModal()" class="px-5 py-2.5 rounded-xl vibrant-primary-btn text-xs font-extrabold">
+                    <i class="fa-solid fa-floppy-disk mr-1"></i> Lưu Thay Đổi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         ADMIN KEY INVENTORY EDITOR MODAL
+         ===================================================== -->
+    <div id="keyListModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/75 backdrop-blur-md p-4">
+        <div class="glass-panel rounded-3xl max-w-lg w-full p-6 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h3 id="keyListModalTitle" class="text-lg font-extrabold theme-text-main">Quản Lý Kho Key</h3>
+                    <p class="text-xs theme-text-muted">Thêm hoặc chỉnh sửa danh sách Key (Mỗi dòng 1 Key)</p>
+                </div>
+                <button onclick="closeKeyListModal()" class="w-8 h-8 rounded-xl vibrant-secondary-btn flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <input type="hidden" id="editingGameId">
+            <div class="mb-4">
+                <textarea id="modalKeyTextarea" rows="8"
+                    class="w-full theme-input rounded-xl p-3.5 text-xs font-mono outline-none no-capitalize"
+                    placeholder="Nhập mỗi dòng 1 mã Key..."></textarea>
+                <div class="flex justify-between items-center mt-2">
+                    <span id="modalKeyCount" class="text-xs theme-text-muted font-semibold">Đang có: 0 Key</span>
+                    <button type="button" onclick="generateRandomKeysInModal()" class="text-xs text-indigo-500 hover:underline font-extrabold flex items-center gap-1">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> + Tạo ngẫu nhiên 5 Key
+                    </button>
+                </div>
+            </div>
+            <div class="flex justify-end gap-2.5">
+                <button onclick="closeKeyListModal()" class="px-4 py-2.5 rounded-xl vibrant-secondary-btn text-xs font-semibold">Đóng</button>
+                <button onclick="saveKeyListModal()" class="px-5 py-2.5 rounded-xl vibrant-primary-btn text-xs font-extrabold">
+                    <i class="fa-solid fa-floppy-disk mr-1"></i> Lưu Thay Đổi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         FLOATING GLASSMORPHIC HEADER (COLORFUL AURORA)
+         ===================================================== -->
+    <header class="sticky top-3 z-30 max-w-6xl w-full mx-auto px-4">
+        <div class="glass-panel rounded-2xl px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+            <!-- Brand Logo (Click 5 times rapidly for secret Admin Login) -->
+            <div onclick="handleSecretLogoClick()" class="flex items-center gap-3.5 cursor-pointer select-none group" title="Nhấn 5 lần để mở Cổng Quản Trị">
+                <div id="uiHeaderLogoBox" class="w-10 h-10 rounded-xl vibrant-primary-btn flex items-center justify-center font-black text-lg group-active:scale-95 transition overflow-hidden shrink-0">
+                    <i class="fa-solid fa-gamepad"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-extrabold text-base sm:text-lg tracking-tight theme-text-main">
+                            <span id="uiHeaderBrandFirst">Sakura</span><span id="uiHeaderBrandHighlight" class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 font-extrabold">Key</span>
+                        </span>
+                        <span id="uiHeaderTagBadge" class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-gradient-to-r from-indigo-500/15 to-pink-500/15 text-indigo-500 border border-indigo-500/25">
+                            CLOUD 24/7
+                        </span>
+                    </div>
+                    <p id="uiHeaderSubtitle" class="text-[11px] theme-text-muted hidden sm:block">Hệ Thống Phân Phối Key Phần Mềm & Tiện Ích Tự Động</p>
+                </div>
+            </div>
+
+            <!-- Right Controls: Colorful Theme Switcher, Status Pill & Contact Link -->
+            <div class="flex items-center gap-2 sm:gap-2.5">
+                <button id="toggleToneBtn" onclick="toggleBrightnessTone()"
+                    class="flex items-center gap-2 vibrant-secondary-btn px-3.5 py-1.5 rounded-xl text-xs font-bold"
+                    title="Chuyển Đổi Giao Diện Sáng Rực Rỡ / Aurora Neon">
+                    <i class="fa-solid fa-wand-magic-sparkles text-indigo-500" id="toneIcon"></i>
+                    <span id="toneToggleText" class="hidden sm:inline">Giao diện: Sáng Rực Rỡ</span>
+                </button>
+
+                <div class="hidden md:flex items-center gap-2 bg-emerald-500/10 px-3.5 py-1.5 rounded-xl border border-emerald-500/25 text-xs">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span id="uiHeaderStatusText" class="font-bold text-emerald-600 dark:text-emerald-400">Máy Chủ: Trực Tuyến</span>
+                </div>
+
+                <a id="uiHeaderContactBtn" href="https://t.me/" target="_blank" rel="noopener noreferrer"
+                    class="hidden sm:inline-flex items-center gap-1.5 vibrant-secondary-btn px-3.5 py-1.5 rounded-xl text-xs font-bold">
+                    <i class="fa-solid fa-headset text-pink-500"></i>
+                    <span id="uiHeaderContactText">Hỗ Trợ</span>
+                </a>
+
+                <!-- Only visible when Admin is actively logged in -->
+                <button id="exitAdminViewBtn" onclick="switchMainView('user')"
+                    class="hidden px-3.5 py-2 rounded-xl vibrant-primary-btn text-xs font-extrabold items-center gap-1.5">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Về Trang Chủ</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- =====================================================
+         MAIN CONTENT CONTAINER
+         ===================================================== -->
+    <main class="relative z-10 flex-1 max-w-6xl w-full mx-auto px-4 py-8 sm:py-10">
+
+        <!-- =================================================
+             VIEW 1: PUBLIC USER PORTAL (COLORFUL BANNER CARDS)
+             ================================================= -->
+        <section id="userView" class="space-y-8">
+
+            <!-- Centered Colorful Hero Banner -->
+            <div class="glass-panel rounded-3xl p-6 sm:p-10 text-center relative overflow-hidden">
+                <div class="absolute -top-24 left-1/4 w-80 h-48 bg-indigo-500/20 blur-3xl pointer-events-none rounded-full"></div>
+                <div class="absolute -bottom-24 right-1/4 w-80 h-48 bg-pink-500/20 blur-3xl pointer-events-none rounded-full"></div>
+
+                <div class="relative z-10 max-w-2xl mx-auto space-y-4">
+                    <div id="uiHeroBadgeWrap" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-500/15 via-purple-500/15 to-pink-500/15 border border-indigo-500/25 text-indigo-600 dark:text-indigo-300 text-xs font-bold">
+                        <i class="fa-solid fa-wand-magic-sparkles text-pink-500"></i>
+                        <span id="uiHeroBadgeText">Cập Nhật Kho Key Mới Mỗi Ngày</span>
+                    </div>
+
+                    <h1 class="text-3xl sm:text-5xl font-extrabold theme-text-main tracking-tight leading-tight">
+                        <span id="uiHeroTitleFirst">Free Key</span>
+                        <span id="uiHeroTitleHighlight" class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500">Menu Game</span>
+                    </h1>
+
+                    <!-- Quick Stats Summary Bar -->
+                    <div class="pt-4 grid grid-cols-3 gap-3 max-w-lg mx-auto">
+                        <div class="theme-subbox rounded-2xl p-3 text-center">
+                            <span class="block text-[11px] theme-text-muted font-medium">Bản Phát Hành</span>
+                            <strong id="heroStatTotalGames" class="text-base sm:text-lg font-extrabold text-indigo-600 dark:text-indigo-400 font-mono">0</strong>
+                        </div>
+                        <div class="theme-subbox rounded-2xl p-3 text-center">
+                            <span class="block text-[11px] theme-text-muted font-medium">Tổng Key Sẵn Sàng</span>
+                            <strong id="heroStatTotalKeys" class="text-base sm:text-lg font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">0</strong>
+                        </div>
+                        <div class="theme-subbox rounded-2xl p-3 text-center">
+                            <span class="block text-[11px] theme-text-muted font-medium">Chế Độ Xác Thực</span>
+                            <strong id="heroStatStepMode" class="text-base sm:text-lg font-extrabold text-pink-600 dark:text-pink-400 font-mono">2 Bước</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recently Claimed Key Banner -->
+            <div id="recentClaimBanner" class="hidden glass-panel rounded-2xl p-4 sm:p-5 border-2 border-emerald-500/40 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5 w-full sm:w-auto">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shrink-0 font-bold shadow-md">
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <span class="text-xs theme-text-sub font-semibold block">Key Bạn Vừa Nhận Gần Đây (<span id="recentClaimGame" class="text-indigo-500 font-extrabold">Game</span>):</span>
+                        <code id="recentClaimKey" class="font-mono text-sm sm:text-base font-extrabold text-emerald-600 dark:text-emerald-400 select-all no-capitalize block truncate">...</code>
+                    </div>
+                </div>
+                <button onclick="copyRecentKey()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl vibrant-primary-btn text-xs font-extrabold shrink-0">
+                    <i class="fa-regular fa-copy mr-1.5"></i> Sao Chép Lại
+                </button>
+            </div>
+
+            <!-- Game Selection Bento Section (WITH BANNER SUPPORT ON EVERY CARD) -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between px-1">
+                    <h2 class="text-sm sm:text-base font-extrabold theme-text-main flex items-center gap-2.5">
+                        <span class="w-2.5 h-5 rounded-full bg-gradient-to-b from-indigo-500 to-pink-500 inline-block"></span>
+                        <span id="uiSectionHeadingText">Danh Sách Bản Phát Hành</span>
+                    </h2>
+                    <span class="px-3.5 py-1 rounded-full vibrant-secondary-btn text-xs font-mono font-semibold">
+                        Đang có <strong id="totalGamesCount" class="text-indigo-500 font-extrabold">0</strong> bản game
+                    </span>
+                </div>
+
+                <!-- 2-Column Banner Card Grid -->
+                <div id="userGameGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+        </section>
+
+        <!-- =================================================
+             VIEW 2: HIDDEN ADMIN CONTROL PANEL
+             ================================================= -->
+        <section id="adminView" class="hidden space-y-6">
+
+            <!-- Admin Header Bar -->
+            <div class="glass-panel rounded-2xl p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-11 h-11 rounded-2xl vibrant-primary-btn flex items-center justify-center text-lg font-bold">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded-md bg-gradient-to-r from-indigo-600 to-pink-600 text-white font-extrabold text-[10px] uppercase">System Admin</span>
+                            <h2 class="text-lg sm:text-xl font-extrabold theme-text-main">Quản Trị Hệ Thống & Tùy Chỉnh Web</h2>
+                        </div>
+                        <p class="text-xs theme-text-muted mt-0.5">Tùy chỉnh trang chủ, số bước vượt link, kho Key (1 Lần / 1H / 24H) và Ảnh Banner cho từng ô Game</p>
+                    </div>
+                </div>
+
+                <!-- Sub-navigation Tabs -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <button id="adminTabBtn_config" onclick="switchAdminTab('config')"
+                        class="px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 vibrant-primary-btn">
+                        <i class="fa-solid fa-link"></i>
+                        <span>Cấu Hình API & Bước Vượt</span>
+                    </button>
+                    <button id="adminTabBtn_games" onclick="switchAdminTab('games')"
+                        class="px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 vibrant-secondary-btn">
+                        <i class="fa-solid fa-gamepad"></i>
+                        <span>Kho Game, Banner & Key</span>
+                    </button>
+                    <button id="adminTabBtn_ui" onclick="switchAdminTab('ui')"
+                        class="px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 vibrant-secondary-btn">
+                        <i class="fa-solid fa-palette"></i>
+                        <span>Tùy Chỉnh Trang Chủ</span>
+                    </button>
+                    <button id="adminTabBtn_logs" onclick="switchAdminTab('logs')"
+                        class="px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 vibrant-secondary-btn">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Nhật Ký</span>
+                        <span id="adminTabLogCount" class="px-1.5 py-0.2 rounded bg-indigo-500/20 text-indigo-500 text-[10px] font-mono font-bold">0</span>
+                    </button>
+                    <button onclick="logoutAdmin()"
+                        class="px-3 py-2 rounded-xl text-xs font-semibold bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 border border-rose-500/20 transition" title="Đăng Xuất">
+                        <i class="fa-solid fa-power-off"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ADMIN TAB 1: API & STEP CONFIGURATION -->
+            <div id="adminTab_config" class="space-y-6">
+
+                <!-- 1-Step vs 2-Step Selector -->
+                <div class="glass-panel rounded-2xl p-6 space-y-4">
+                    <div>
+                        <h3 class="text-base font-bold theme-text-main flex items-center gap-2">
+                            <i class="fa-solid fa-code-branch text-indigo-500"></i>
+                            <span>Tùy Chỉnh Số Lần Vượt Link (1 Lần Hoặc 2 Lần)</span>
+                        </h3>
+                        <p class="text-xs theme-text-muted">Cấu hình số bước chuyển tiếp người dùng cần hoàn thành để mở khóa Key</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div id="modeCard1" onclick="selectAdminStepMode(1)"
+                            class="cursor-pointer rounded-2xl p-5 border-2 transition flex items-start gap-4 theme-subbox">
+                            <div class="w-11 h-11 rounded-xl bg-indigo-500/15 text-indigo-500 flex items-center justify-center font-extrabold text-base shrink-0">
+                                1x
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="font-bold theme-text-main text-sm sm:text-base">Vượt 1 Lần (1 Bước Đích)</h4>
+                                    <span id="modeCheck1" class="w-5 h-5 rounded-full border border-indigo-400 flex items-center justify-center text-xs"></span>
+                                </div>
+                                <p class="text-xs theme-text-muted mt-1 leading-relaxed">
+                                    Người dùng chỉ cần vượt qua 1 liên kết rút gọn duy nhất để nhận trực tiếp Key.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div id="modeCard2" onclick="selectAdminStepMode(2)"
+                            class="cursor-pointer rounded-2xl p-5 border-2 transition flex items-start gap-4 theme-subbox">
+                            <div class="w-11 h-11 rounded-xl vibrant-primary-btn flex items-center justify-center font-extrabold text-base shrink-0">
+                                2x
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="font-bold theme-text-main text-sm sm:text-base">Vượt 2 Lần Liên Tiếp (2 Bước)</h4>
+                                    <span id="modeCheck2" class="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs">
+                                        <i class="fa-solid fa-check"></i>
+                                    </span>
+                                </div>
+                                <p class="text-xs theme-text-muted mt-1 leading-relaxed">
+                                    Người dùng vượt qua API 1 sẽ quay về trang xác nhận trung gian để tiếp tục vượt API 2 rồi mới mở khóa Key.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 1 & Step 2 API Credentials -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Step 1 API Card -->
+                    <div class="glass-panel rounded-2xl p-6 space-y-4">
+                        <div class="flex items-center justify-between border-b border-indigo-500/15 pb-3">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2.5 py-0.5 rounded-md bg-indigo-600 text-white font-extrabold text-xs">BƯỚC 1</span>
+                                <h3 class="font-bold theme-text-main text-sm sm:text-base">API Web Vượt Link 1</h3>
+                            </div>
+                            <span class="text-xs text-emerald-500 font-mono font-bold">● Đang Bật</span>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold theme-text-sub mb-1.5">Nhà Cung Cấp Dịch Vụ (Preset):</label>
+                            <select id="adminStep1Preset" onchange="applyApiPreset(1, this.value)"
+                                class="w-full theme-input rounded-xl px-3.5 py-2.5 text-xs sm:text-sm outline-none">
+                                <option value="link4m">Link4m.co</option>
+                                <option value="yeumoney">Yeumoney.com</option>
+                                <option value="layma">Layma.net</option>
+                                <option value="traffic123">Traffic123.net</option>
+                                <option value="link1s">Link1s.com</option>
+                                <option value="custom">Tùy Chỉnh (Điền URL API Riêng)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold theme-text-sub mb-1.5">API Token / API Key (Web 1):</label>
+                            <input type="text" id="adminStep1Token" placeholder="Nhập API Token của bạn..."
+                                class="w-full theme-input rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-mono outline-none no-capitalize">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold theme-text-sub mb-1.5">
+                                Đường Dẫn API / QuickLink (Biến <code class="text-indigo-500 font-bold no-capitalize">{api}</code> và <code class="text-pink-500 font-bold no-capitalize">{url}</code>):
+                            </label>
+                            <input type="text" id="adminStep1Template"
+                                class="w-full theme-input rounded-xl px-3.5 py-2.5 text-xs font-mono outline-none no-capitalize">
+                        </div>
+                    </div>
+
+                    <!-- Step 2 API Card -->
+                    <div id="adminStep2ConfigCard" class="glass-panel rounded-2xl p-6 space-y-4 transition-opacity">
+                        <div class="flex items-center justify-between border-b border-indigo-500/15 pb-3">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2.5 py-0.5 rounded-md bg-pink-600 text-white font-extrabold text-xs">BƯỚC 2</span>
+                                <h3 class="font-bold theme-text-main text-sm sm:text-base">API Web Vượt Link 2</h3>
+                            </div>
+                            <span id="step2StatusTag" class="text-xs text-emerald-500 font-mono font-bold">● Đang Bật (2 Bước)</span>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold theme-text-sub mb-1.5">Nhà Cung Cấp Dịch Vụ (Preset):</label>
+                            <select id="adminStep2Preset" onchange="applyApiPreset(2, this.value)"
+                                class="w-full theme-input rounded-xl px-3.5 py-2.5 text-xs sm:text-sm outline-none">
+                                <option value="yeumoney">Yeumoney.com</option>
+                                <option value="link4m">Link4m.co</option>
+                                <option value="layma">Layma.net</option>
+                                <option value="traffic123">Traffic123.net</option>
+                                <option value="link1s">Link1s.com</option>
+                                <option value="custom">Tùy Chỉnh (Điền URL API Riêng)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold theme-text-sub mb-1.5">API Token / API Key (Web 2):</label>
+                            <input type="text" id="adminStep2Token" placeholder="Nhập API Token của bạn..."
+                                class="w-full theme-input rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-mono outline-none no-capitalize">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold theme-text-sub mb-1.5">
+                                Đường Dẫn API / QuickLink (Biến <code class="text-indigo-500 font-bold no-capitalize">{api}</code> và <code class="text-pink-500 font-bold no-capitalize">{url}</code>):
+                            </label>
+                            <input type="text" id="adminStep2Template"
+                                class="w-full theme-input rounded-xl px-3.5 py-2.5 text-xs font-mono outline-none no-capitalize">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Silent Verification Rules & Admin Password Settings -->
+                <div class="glass-panel rounded-2xl p-6 space-y-5">
+                    <div class="border-b border-indigo-500/15 pb-3">
+                        <h3 class="text-base font-bold theme-text-main flex items-center gap-2">
+                            <i class="fa-solid fa-lock text-indigo-500"></i>
+                            <span>Cấu Hình Bảo Vệ Ngầm & Mật Khẩu Quản Trị</span>
+                        </h3>
+                        <p class="text-xs theme-text-muted">Các cơ chế kiểm tra ngầm hoạt động tự động để chống bypass đường dẫn đích</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="theme-subbox rounded-xl p-4">
+                            <label class="block text-xs font-bold theme-text-main mb-1">Thời Gian Tối Thiểu / Bước</label>
+                            <p class="text-[11px] theme-text-muted mb-3">Tự động từ chối phiên nếu quay về đích sớm hơn số giây này.</p>
+                            <div class="flex items-center gap-2">
+                                <input type="number" id="adminMinSeconds" min="3" max="180" value="15"
+                                    class="w-20 theme-input rounded-lg px-3 py-1.5 text-sm font-mono font-bold outline-none">
+                                <span class="text-xs theme-text-sub font-semibold">Giây</span>
+                            </div>
+                        </div>
+
+                        <div class="theme-subbox rounded-xl p-4 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-xs font-bold theme-text-main">Bắt Buộc Tuần Tự Bước</span>
+                                    <input type="checkbox" id="adminSequentialCheck" checked class="w-4 h-4 accent-indigo-600 rounded cursor-pointer">
+                                </div>
+                                <p class="text-[11px] theme-text-muted">Kiểm tra chữ ký nối tiếp giữa Bước 1 và Bước 2.</p>
+                            </div>
+                            <span class="text-[10px] font-mono text-indigo-500 font-bold mt-2 block">Hoạt Động Ngầm</span>
+                        </div>
+
+                        <div class="theme-subbox rounded-xl p-4 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-xs font-bold theme-text-main">Khóa Token 1 Lần & Phiên</span>
+                                    <input type="checkbox" id="adminOneTimeToken" checked class="w-4 h-4 accent-indigo-600 rounded cursor-pointer">
+                                </div>
+                                <p class="text-[11px] theme-text-muted">Vô hiệu hóa ngay URL đích sau khi lấy Key hoặc khác trình duyệt.</p>
+                            </div>
+                            <span class="text-[10px] font-mono text-indigo-500 font-bold mt-2 block">Hoạt Động Ngầm</span>
+                        </div>
+
+                        <div class="theme-subbox rounded-xl p-4">
+                            <label class="block text-xs font-bold theme-text-main mb-1">Đổi Mật Khẩu Admin</label>
+                            <p class="text-[11px] theme-text-muted mb-2">Mật khẩu mở cổng xác thực</p>
+                            <input type="text" id="adminNewPasswordInput" placeholder="Mặc định: admin123"
+                                class="w-full theme-input rounded-lg px-3 py-1.5 text-xs font-mono outline-none no-capitalize">
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-indigo-500/15">
+                        <button onclick="resetDefaultData()"
+                            class="px-4 py-2.5 rounded-xl vibrant-secondary-btn text-xs font-semibold">
+                            <i class="fa-solid fa-rotate-left mr-1"></i> Đặt Lại Mặc Định
+                        </button>
+                        <button onclick="saveAdminConfig()"
+                            class="px-6 py-3 rounded-xl vibrant-primary-btn font-extrabold text-xs sm:text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            <span>Lưu Toàn Bộ Cấu Hình</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADMIN TAB 2: GAME, BANNER & KEY INVENTORY -->
+            <div id="adminTab_games" class="hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Add Game Form (WITH BANNER UPLOAD & PREVIEW) -->
+                    <div class="glass-panel rounded-2xl p-6 space-y-4 h-fit">
+                        <h3 class="text-base font-bold theme-text-main flex items-center gap-2 border-b border-indigo-500/15 pb-3">
+                            <i class="fa-solid fa-plus-circle text-indigo-500"></i>
+                            <span>Thêm Ô Game, Banner & Key Mới</span>
+                        </h3>
+
+                        <div>
+                            <label class="block text-xs font-semibold theme-text-sub mb-1">Tên Game / Bản Cập Nhật:</label>
+                            <input type="text" id="newGameName" placeholder="VD: Genshin Impact Auto V5.0"
+                                class="w-full theme-input rounded-xl px-3.5 py-2.5 text-xs sm:text-sm outline-none">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Danh Mục (Nhãn):</label>
+                                <input type="text" id="newGameCategory" placeholder="VD: Battle Royale"
+                                    class="w-full theme-input rounded-xl px-3 py-2.5 text-xs outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Link Tải Xuống (URL):</label>
+                                <input type="text" id="newGameDownloadUrl" placeholder="https://... (Link tải bản hack/mod)"
+                                    class="w-full theme-input rounded-xl px-3 py-2.5 text-xs outline-none no-capitalize">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold theme-text-sub mb-1">Mô Tả (Có tích xanh ở trước, dùng dấu ; để tách dòng):</label>
+                            <input type="text" id="newGameDesc" placeholder="VD: Aimbot chuẩn tâm; Hiện xếp hạng sảnh chờ; An toàn 100%"
+                                class="w-full theme-input rounded-xl px-3.5 py-2.5 text-xs outline-none">
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Chế Độ Cấp Key:</label>
+                                <select id="newGameKeyType"
+                                    class="w-full theme-input rounded-xl px-3 py-2.5 text-xs outline-none">
+                                    <option value="onetime">Key Riêng (Tự Xóa Khi Lấy)</option>
+                                    <option value="1h">Key 1H (Dùng Trong 1 Giờ)</option>
+                                    <option value="shared">Key Dùng Chung 24H</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Biểu Tượng (Icon):</label>
+                                <select id="newGameIcon" onchange="previewNewGameAvatar()"
+                                    class="w-full theme-input rounded-xl px-3 py-2.5 text-xs outline-none">
+                                    <option value="fa-fire">🔥 Ngọn Lửa (FPS / Battle)</option>
+                                    <option value="fa-bolt">⚡ Tia Chớp (Fast / Script)</option>
+                                    <option value="fa-shield-halved">🛡️ Khiên Bảo Vệ (VIP)</option>
+                                    <option value="fa-dragon">🐉 Rồng (MOBA / Arena)</option>
+                                    <option value="fa-cube">🧊 Khối Vuông (Sandbox)</option>
+                                    <option value="fa-crosshairs">🎯 Tâm Ngắm (Shooter)</option>
+                                    <option value="fa-crown">👑 Vương Miện (King)</option>
+                                    <option value="fa-gem">💎 Kim Cương (Pro)</option>
+                                    <option value="fa-rocket">🚀 Tên Lửa (Boost)</option>
+                                    <option value="fa-skull">💀 Đầu Lâu (Raid)</option>
+                                    <option value="fa-wand-sparkles">✨ Phép Thuật (RPG)</option>
+                                    <option value="fa-gamepad">🎮 Tay Cầm Game</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- NEW: Banner Image Upload & URL for New Game Card -->
+                        <div class="theme-subbox rounded-xl p-3.5 space-y-2.5">
+                            <div class="flex items-center justify-between gap-2">
+                                <div>
+                                    <span class="text-xs font-extrabold theme-text-main block">
+                                        <i class="fa-regular fa-image text-indigo-500 mr-1"></i>Ảnh Banner Nền Của Ô Game:
+                                    </span>
+                                    <span class="text-[10px] theme-text-muted">Hiển thị trọn vẹn 100% kích thước ảnh ngang (1280x593)</span>
+                                </div>
+                                <select id="newGameBannerFit" onchange="previewNewGameBanner()"
+                                    class="theme-input rounded-lg px-2 py-1 text-[10px] font-bold outline-none">
+                                    <option value="contain">Trọn Vẹn Ảnh</option>
+                                    <option value="cover">Lấp Đầy</option>
+                                </select>
+                            </div>
+                            <div id="newGameBannerPreview" class="w-full aspect-[1280/593] rounded-lg overflow-hidden bg-slate-950 flex items-center justify-center text-white text-[11px] font-bold shadow-inner border border-indigo-500/20">
+                                Mặc định: Banner Gaming Đa Sắc
+                            </div>
+                            <input type="text" id="newGameBannerUrl" oninput="previewNewGameBanner()"
+                                placeholder="Dán Link Ảnh Banner (https://...)"
+                                class="w-full theme-input rounded-lg px-3 py-1.5 text-xs outline-none no-capitalize">
+                            <div class="flex items-center justify-between gap-2">
+                                <label class="cursor-pointer px-3 py-1.5 rounded-lg vibrant-primary-btn text-[11px] font-bold inline-flex items-center gap-1.5">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                                    <span>Tải Ảnh Banner</span>
+                                    <input type="file" accept="image/*" class="hidden" onchange="handleBannerFileUpload(this, 'newGameBannerUrl', 'newGameBannerPreview')">
+                                </label>
+                                <button type="button" onclick="document.getElementById('newGameBannerUrl').value=''; previewNewGameBanner();"
+                                    class="text-[11px] theme-text-muted hover:text-indigo-500 font-semibold">
+                                    Xóa Banner
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Custom Avatar / Icon Upload for New Game -->
+                        <div class="theme-subbox rounded-xl p-3.5 space-y-2.5">
+                            <div class="flex items-center justify-between gap-2">
+                                <div>
+                                    <span class="text-xs font-bold theme-text-main block">Ảnh Icon Nhỏ (Tùy Chọn):</span>
+                                    <span class="text-[10px] theme-text-muted">Thay thế cho biểu tượng có sẵn</span>
+                                </div>
+                                <div id="newGameAvatarPreview" class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-lg shrink-0 overflow-hidden shadow">
+                                    <i class="fa-solid fa-fire"></i>
+                                </div>
+                            </div>
+                            <input type="text" id="newGameImageUrl" oninput="previewNewGameAvatar()"
+                                placeholder="Dán Link Ảnh Icon (https://...)"
+                                class="w-full theme-input rounded-lg px-3 py-1.5 text-xs outline-none no-capitalize">
+                            <div class="flex items-center justify-between gap-2">
+                                <label class="cursor-pointer px-3 py-1.5 rounded-lg vibrant-secondary-btn text-[11px] font-bold inline-flex items-center gap-1.5">
+                                    <i class="fa-solid fa-upload"></i>
+                                    <span>Tải Ảnh Icon</span>
+                                    <input type="file" accept="image/*" class="hidden" onchange="handleImageFileUpload(this, 'newGameImageUrl', 'newGameAvatarPreview')">
+                                </label>
+                                <button type="button" onclick="document.getElementById('newGameImageUrl').value=''; previewNewGameAvatar();"
+                                    class="text-[11px] theme-text-muted hover:text-indigo-500 font-semibold">
+                                    Dùng Lại Icon
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <label class="text-xs font-semibold theme-text-sub">Danh Sách Key (Mỗi dòng 1 Key):</label>
+                                <button type="button" onclick="fillSampleNewGameKeys()" class="text-[11px] text-indigo-500 font-bold hover:underline">
+                                    + Tạo mẫu 5 Key
+                                </button>
+                            </div>
+                            <textarea id="newGameKeys" rows="4"
+                                placeholder="SAKURA-2026-AAAA&#10;SAKURA-2026-BBBB"
+                                class="w-full theme-input rounded-xl p-3 text-xs font-mono outline-none no-capitalize"></textarea>
+                        </div>
+
+                        <button onclick="addNewGame()"
+                            class="w-full py-3 rounded-xl vibrant-primary-btn font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Thêm Vào Danh Sách</span>
+                        </button>
+                    </div>
+
+                    <!-- Existing Games List -->
+                    <div class="lg:col-span-2 glass-panel rounded-2xl p-6 space-y-4">
+                        <div class="flex items-center justify-between border-b border-indigo-500/15 pb-3">
+                            <div>
+                                <h3 class="text-base font-bold theme-text-main">Quản Lý Các Ô Game Hiện Có</h3>
+                                <p class="text-xs theme-text-muted">Bấm <strong>"Sửa Banner & Game"</strong> trên từng mục để thêm/thay đổi ảnh Banner nền, ảnh Icon hoặc nạp thêm Key</p>
+                            </div>
+                        </div>
+
+                        <div id="adminGamesList" class="space-y-3.5">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADMIN TAB 3: FULL HOMEPAGE UI CUSTOMIZATION -->
+            <div id="adminTab_ui" class="hidden space-y-6">
+                <div class="glass-panel rounded-2xl p-6 space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-indigo-500/15 pb-4">
+                        <div>
+                            <h3 class="text-base font-bold theme-text-main flex items-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles text-indigo-500"></i>
+                                <span>Tùy Chỉnh Toàn Bộ Nội Dung Ngoài Trang Chủ</span>
+                            </h3>
+                            <p class="text-xs theme-text-muted">Mọi chữ, tiêu đề, logo, nhãn trạng thái và chân trang ngoài trang chủ đều có thể thay đổi tại đây</p>
+                        </div>
+                        <button onclick="saveUiConfigFromForm()"
+                            class="px-5 py-2.5 rounded-xl vibrant-primary-btn font-extrabold text-xs sm:text-sm flex items-center gap-2 shrink-0">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            <span>Lưu Giao Diện Trang Chủ</span>
+                        </button>
+                    </div>
+
+                    <!-- 1. Header & Logo Customization -->
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-extrabold uppercase tracking-wider text-indigo-500 flex items-center gap-2">
+                            <i class="fa-solid fa-window-maximize"></i>
+                            <span>1. Phần Thanh Đầu Trang (Header & Logo)</span>
+                        </h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Chữ Thương Hiệu Đầu:</label>
+                                <input type="text" id="uiForm_brandFirst" placeholder="VD: Sakura"
+                                    class="w-full theme-input rounded-xl px-3.5 py-2 text-xs outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Chữ Thương Hiệu Nổi Bật:</label>
+                                <input type="text" id="uiForm_brandHighlight" placeholder="VD: Key"
+                                    class="w-full theme-input rounded-xl px-3.5 py-2 text-xs outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Nhãn Nhỏ Cạnh Tên Web:</label>
+                                <input type="text" id="uiForm_headerTagBadge" placeholder="VD: Cloud 24/7"
+                                    class="w-full theme-input rounded-xl px-3.5 py-2 text-xs outline-none">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Dòng Mô Tả Nhỏ Dưới Tên Web:</label>
+                                <input type="text" id="uiForm_headerSubtitle" placeholder="VD: Hệ Thống Phân Phối Key Phần Mềm & Tiện Ích Tự Động"
+                                    class="w-full theme-input rounded-xl px-3.5 py-2 text-xs outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Chữ Trạng Thái Máy Chủ:</label>
+                                <input type="text" id="uiForm_headerStatusText" placeholder="VD: Máy Chủ: Trực Tuyến"
+                                    class="w-full theme-input rounded-xl px-3.5 py-2 text-xs outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Chữ Nút Liên Hệ / Hỗ Trợ:</label>
+                                <input type="text" id="uiForm_headerContactText" placeholder="VD: Hỗ Trợ"
+                                    class="w-full theme-input rounded-xl px-3.5 py-2 text-xs outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Link Khi Bấm Nút Hỗ Trợ (Telegram/Zalo):</label>
+                                <input type="text" id="uiForm_headerContactUrl" placeholder="https://t.me/..."
+                                    class="w-full theme-input rounded-xl px-3.5 py-2 text-xs outline-none no-capitalize">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Ảnh / Icon Logo Header:</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="text" id="uiForm_headerLogoImage" placeholder="Dán Link Ảnh Logo (Để trống dùng Icon)"
+                                        class="w-full theme-input rounded-xl px-3 py-2 text-xs outline-none no-capitalize">
+                                    <label class="cursor-pointer px-3 py-2 rounded-xl vibrant-secondary-btn text-xs font-bold shrink-0">
+                                        <i class="fa-solid fa-upload"></i>
+                                        <input type="file" accept="image/*" class="hidden" onchange="handleImageFileUpload(this, 'uiForm_headerLogoImage')">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Hero Title & Section Texts -->
+                    <div class="space-y-4 pt-4 border-t border-indigo-500/15">
+                        <h4 class="text-xs font-extrabold uppercase tracking-wider text-indigo-500 flex items-center gap-2">
+                            <i class="fa-solid fa-heading"></i>
+                            <span>2. Phần Tiêu Đề Lớn Giữa Trang & Danh Sách</span>
+                        </h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Nhãn Nhỏ Phía Trên Tiêu Đề:</label>
+                                <input type="text" id="uiForm_heroBadgeText" placeholder="VD: Cập Nhật Kho Key Mới Mỗi Ngày"
+                                    class="w-full theme-input rounded-xl px-3.5 py-2 text-xs outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Tiêu Đề Chính Phần Đầu:</label>
+                                <input type="text" id="uiForm_heroTitleFirst" placeholder="VD: Free Key"
+                                    class="w-full theme-input rounded-xl px-3.5 py-2 text-xs font-bold outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Tiêu Đề Chính Phần Sau (Màu Gradient):</label>
+                                <input type="text" id="uiForm_heroTitleHighlight" placeholder="VD: Menu Game"
+                                    class="w-full theme-input rounded-xl px-3.5 py-2 text-xs font-bold outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Tiêu Đề Mục Danh Sách Game:</label>
+                                <input type="text" id="uiForm_sectionHeadingText" placeholder="VD: Danh Sách Bản Phát Hành"
+                                    class="w-full theme-input rounded-xl px-3.5 py-2 text-xs outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Chữ Trên Nút Lấy Key:</label>
+                                <input type="text" id="uiForm_claimBtnText" placeholder="VD: Nhận Key Ngay"
+                                    class="w-full theme-input rounded-xl px-3.5 py-2 text-xs outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Chữ Trên Nút Tải Xuống:</label>
+                                <input type="text" id="uiForm_downloadBtnText" placeholder="VD: Tải Xuống"
+                                    class="w-full theme-input rounded-xl px-3.5 py-2 text-xs outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Link Tải Xuống Mặc Định Chung:</label>
+                                <input type="text" id="uiForm_defaultDownloadUrl" placeholder="https://... (Dùng khi ô game chưa điền link riêng)"
+                                    class="w-full theme-input rounded-xl px-3.5 py-2 text-xs outline-none no-capitalize">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Chữ Khi Hết Key:</label>
+                                <input type="text" id="uiForm_outOfStockText" placeholder="VD: Tạm Hết Key"
+                                    class="w-full theme-input rounded-xl px-3.5 py-2 text-xs outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Footer Texts -->
+                    <div class="space-y-4 pt-4 border-t border-indigo-500/15">
+                        <h4 class="text-xs font-extrabold uppercase tracking-wider text-indigo-500 flex items-center gap-2">
+                            <i class="fa-solid fa-shoe-prints"></i>
+                            <span>3. Phần Chân Trang (Footer)</span>
+                        </h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Nội Dung Chân Trang Trái:</label>
+                                <input type="text" id="uiForm_footerLeftText" placeholder="VD: SakuraKey Portal — Hệ Thống Phân Phối Mã Kích Hoạt Tự Động"
+                                    class="w-full theme-input rounded-xl px-3.5 py-2 text-xs outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold theme-text-sub mb-1">Nội Dung Chân Trang Phải (Bản Quyền):</label>
+                                <input type="text" id="uiForm_footerRightText" placeholder="VD: © 2026 SakuraKey Cloud. All Rights Reserved."
+                                    class="w-full theme-input rounded-xl px-3.5 py-2 text-xs outline-none">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADMIN TAB 4: SILENT LOGS & CALLBACK TESTER -->
+            <div id="adminTab_logs" class="hidden space-y-6">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="glass-panel rounded-2xl p-4 flex items-center gap-4">
+                        <div class="w-11 h-11 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-lg shadow">
+                            <i class="fa-solid fa-check-double"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs theme-text-muted block">Key Đã Cấp Thành Công</span>
+                            <span id="statSuccessCount" class="text-2xl font-extrabold text-emerald-500 font-mono">0</span>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-2xl p-4 flex items-center gap-4">
+                        <div class="w-11 h-11 rounded-xl bg-rose-500/15 text-rose-500 border border-rose-500/25 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs theme-text-muted block">Phiên Bất Thường Đã Chặn Ngầm</span>
+                            <span id="statBlockedCount" class="text-2xl font-extrabold text-rose-500 font-mono">0</span>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-2xl p-4 flex items-center justify-between gap-2">
+                        <div>
+                            <span class="text-xs theme-text-muted block">Kiểm Thử Luồng Đích (Admin)</span>
+                            <span class="text-[11px] theme-text-main font-semibold">Giả lập hoàn tất callback hợp lệ</span>
+                        </div>
+                        <button onclick="adminSimulateCallbackTest()"
+                            class="px-3.5 py-2 rounded-xl vibrant-primary-btn text-xs font-extrabold transition shrink-0">
+                            Test Callback
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl p-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                        <div>
+                            <h3 class="text-base font-bold theme-text-main">Nhật Ký Cấp Phát Key & Chặn Ngầm</h3>
+                            <p class="text-xs theme-text-muted">Chỉ hiển thị duy nhất trong bảng quản trị</p>
+                        </div>
+                        <button onclick="clearSecurityLogs()"
+                            class="px-3.5 py-2 rounded-xl vibrant-secondary-btn text-xs font-semibold">
+                            <i class="fa-solid fa-trash-can mr-1"></i> Xóa Nhật Ký
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="border-b border-indigo-500/20 theme-text-muted uppercase">
+                                    <th class="py-3 px-3">Thời Gian</th>
+                                    <th class="py-3 px-3">Bản Game</th>
+                                    <th class="py-3 px-3">Mã Phiên</th>
+                                    <th class="py-3 px-3">Trạng Thái</th>
+                                    <th class="py-3 px-3">Chi Tiết</th>
+                                </tr>
+                            </thead>
+                            <tbody id="securityLogsTableBody" class="divide-y divide-indigo-500/10">
+                                <!-- Populated via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Colorful Minimalist Footer -->
+    <footer class="relative z-10 border-t border-indigo-500/15 glass-panel py-6 mt-12">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs theme-text-muted">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-gamepad text-indigo-500"></i>
+                <span id="uiFooterLeftText"><strong class="theme-text-main">SakuraKey Portal</strong> — Hệ Thống Phân Phối Mã Kích Hoạt Tự Động</span>
+            </div>
+            <div class="text-[11px] theme-text-muted">
+                <span id="uiFooterRightText">© 2026 SakuraKey Cloud. All Rights Reserved.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- =====================================================
+         APPLICATION LOGIC (COLORFUL AURORA + BANNER SYSTEM)
+         ===================================================== -->
+    <script>
+        // --- HELPER: CLEAN TEXT FORMATTER ---
+        function formatCleanText(str) {
+            if (!str) return '';
+            return String(str).trim();
+        }
+
+        function getKeyModeLabel(keyType) {
+            if (keyType === '1h') return 'Key 1H';
+            if (keyType === 'shared' || keyType === '24h') return 'Key 24H';
+            return 'Key 1 Lần';
+        }
+
+        // --- RENDER DESCRIPTION ITEMS WITH GREEN/BLUE VERIFIED CHECKMARK IN FRONT ---
+        function renderDescriptionWithCheckmarks(descText) {
+            const raw = formatCleanText(descText || 'Phiên bản cập nhật ổn định, an toàn tài khoản');
+            const parts = raw
+                .split(/\r?\n|;|\|/)
+                .map(s => s.trim())
+                .filter(Boolean);
+
+            const items = parts.length > 0 ? parts : [raw];
+            return items.map(item => `
+                <div class="flex items-start gap-2 text-xs theme-text-sub leading-relaxed">
+                    <span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-emerald-500/15 text-emerald-500 shrink-0 mt-0.5 shadow-sm">
+                        <i class="fa-solid fa-circle-check text-[13px]"></i>
+                    </span>
+                    <span class="font-medium">${escapeHtml(item)}</span>
+                </div>
+            `).join('');
+        }
+
+        // --- VIBRANT BUILT-IN SVG GAMING BANNERS (EXACT 1280x593 WIDESCREEN RATIO) ---
+        function createVibrantSvgBanner(c1, c2, c3, accentTitle, subTag = 'AIMBOT • VISUALS • THÁCH ĐẤU') {
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 593" width="100%" height="100%">
+                <defs>
+                    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#0f1420"/>
+                        <stop offset="52%" stop-color="#171f32"/>
+                        <stop offset="100%" stop-color="${c1}"/>
+                    </linearGradient>
+                    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="${c2}" stop-opacity="0.88"/>
+                        <stop offset="100%" stop-color="${c3}" stop-opacity="0.92"/>
+                    </linearGradient>
+                </defs>
+                <rect width="1280" height="593" fill="url(#bg)"/>
+                <!-- Left Menu Mockup Panel (Like Aimbot UI in Screenshot) -->
+                <rect x="0" y="20" width="680" height="573" rx="14" fill="#10151d" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+                <line x1="120" y1="20" x2="120" y2="593" stroke="rgba(255,255,255,0.06)" stroke-width="2"/>
+                <circle cx="60" cy="85" r="18" stroke="#f97316" stroke-width="3" fill="none"/>
+                <text x="60" y="130" text-anchor="middle" fill="#f97316" font-family="sans-serif" font-weight="700" font-size="20">Aimbot</text>
+                <text x="60" y="235" text-anchor="middle" fill="#cbd5e1" font-family="sans-serif" font-weight="600" font-size="20">Visuals</text>
+                <text x="60" y="340" text-anchor="middle" fill="#cbd5e1" font-family="sans-serif" font-weight="600" font-size="20">Misc</text>
+                <text x="60" y="445" text-anchor="middle" fill="#cbd5e1" font-family="sans-serif" font-weight="600" font-size="20">Settings</text>
+                <!-- Menu Header & Toggles -->
+                <text x="165" y="90" fill="#f97316" font-family="sans-serif" font-weight="800" font-size="26" letter-spacing="1">⊕ ${accentTitle}</text>
+                <text x="165" y="160" fill="#e2e8f0" font-family="sans-serif" font-weight="600" font-size="22">Use <tspan fill="#f97316">Aimbot with restraint.</tspan></text>
+                <text x="165" y="200" fill="#94a3b8" font-family="sans-serif" font-weight="500" font-size="20">${subTag}</text>
+                <rect x="165" y="255" width="475" height="72" rx="14" fill="#18202c"/>
+                <text x="195" y="300" fill="#ffffff" font-family="sans-serif" font-weight="700" font-size="23">Aimbot Safe Mode</text>
+                <circle cx="595" cy="291" r="20" fill="#f97316"/>
+                <path d="M 586 291 L 593 298 L 606 284" stroke="#ffffff" stroke-width="3.5" fill="none"/>
+                <rect x="165" y="390" width="475" height="68" rx="14" fill="#18202c"/>
+                <text x="195" y="432" fill="#ffffff" font-family="sans-serif" font-weight="600" font-size="22">Legit • VIP Cloud</text>
+                <rect x="165" y="480" width="475" height="68" rx="14" fill="#18202c"/>
+                <text x="195" y="522" fill="#ffffff" font-family="sans-serif" font-weight="600" font-size="22">Auto Fire &amp; Smooth FPS</text>
+                <!-- Right Rank Banner Panel (Like Thach Dau 6 in Screenshot) -->
+                <rect x="780" y="45" width="295" height="515" rx="18" fill="url(#cardGrad)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+                <text x="927" y="110" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-weight="900" font-size="30" letter-spacing="1.5">THÁCH ĐẤU 6</text>
+                <polygon points="927,145 965,210 1035,190 990,260 927,235 864,260 819,190 889,210" fill="#fde047" opacity="0.9"/>
+                <rect x="892" y="230" width="70" height="36" rx="8" fill="#0f172a" stroke="#fde047" stroke-width="2"/>
+                <text x="927" y="256" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-weight="900" font-size="24">96</text>
+                <text x="927" y="315" text-anchor="middle" fill="#fde047" font-family="sans-serif" font-weight="800" font-size="24">★ 6406</text>
+                <text x="927" y="365" text-anchor="middle" fill="#f8fafc" font-family="sans-serif" font-weight="600" font-size="16">✔ Hiện xếp hạng ở sảnh chờ</text>
+                <rect x="837" y="465" width="180" height="52" rx="10" fill="#facc15"/>
+                <text x="927" y="499" text-anchor="middle" fill="#0f172a" font-family="sans-serif" font-weight="900" font-size="22">BẮT ĐẦU</text>
+                <!-- Right Sidebar Icons -->
+                <text x="1175" y="155" text-anchor="middle" fill="#fde047" font-family="sans-serif" font-weight="800" font-size="16">XẾP HẠNG 2026</text>
+                <text x="1175" y="265" text-anchor="middle" fill="#e2e8f0" font-family="sans-serif" font-weight="700" font-size="15">MỤC TIÊU MÙA</text>
+                <text x="1175" y="375" text-anchor="middle" fill="#e2e8f0" font-family="sans-serif" font-weight="700" font-size="15">BẢNG XẾP HẠNG</text>
+                <text x="1175" y="485" text-anchor="middle" fill="#e2e8f0" font-family="sans-serif" font-weight="700" font-size="15">THÔNG SỐ MÙA</text>
+            </svg>`;
+            return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+        }
+
+        const DEFAULT_BANNERS = {
+            game_ff_ob46: createVibrantSvgBanner('#7c2d12', '#b91c1c', '#7f1d1d', 'AIMBOT VIP OB46', 'Avoid excessive headshots to reduce detections'),
+            game_lq_s3: createVibrantSvgBanner('#312e81', '#4338ca', '#1e1b4b', 'MAP BRIGHT & CAM S3', 'Ultra Wide Camera • Cooldown Tracker • Safe Mode'),
+            game_roblox_exec: createVibrantSvgBanner('#064e3b', '#047857', '#0f172a', 'BLOX FRUITS HUB', 'Auto Farm Mastery • Sea Event • Raid Auto'),
+            game_pubg_macro: createVibrantSvgBanner('#1e3a8a', '#1d4ed8', '#172554', 'RECOIL & 120 FPS', 'Zero Recoil Macro • Smooth 120Hz Unlock'),
+            fallback: createVibrantSvgBanner('#3b0764', '#6d28d9', '#4c1d95', 'SAKURA CLOUD MENU', 'Verified Safe • Cloud Key 24/7 • Auto Update')
+        };
+
+        function getBannerUrlForGame(game) {
+            if (game && game.bannerUrl && String(game.bannerUrl).trim() !== '') {
+                return String(game.bannerUrl).trim();
+            }
+            if (game && DEFAULT_BANNERS[game.id]) {
+                return DEFAULT_BANNERS[game.id];
+            }
+            return DEFAULT_BANNERS.fallback;
+        }
+
+        function renderAvatarHtml(iconClass, imageUrl, extraImgClass = 'w-full h-full object-cover') {
+            if (imageUrl && String(imageUrl).trim() !== '') {
+                return `<img src="${escapeHtml(imageUrl)}" alt="Game Icon" class="${extraImgClass}" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\\'fa-solid ${escapeHtml(iconClass || 'fa-gamepad')}\\'></i>'">`;
+            }
+            return `<i class="fa-solid ${escapeHtml(iconClass || 'fa-gamepad')}"></i>`;
+        }
+
+        // --- 0. COLORFUL THEME SWITCHER (VIBRANT LIGHT vs AURORA NEON) ---
+        let currentToneMode = 'light'; // 'light' (Sáng Rực Rỡ) or 'neon' (Aurora Neon)
+
+        function initBrightnessTone() {
+            const savedTone = localStorage.getItem('ok_colorful_theme') || 'light';
+            applyBrightnessTone(savedTone);
+        }
+
+        function toggleBrightnessTone() {
+            const nextTone = currentToneMode === 'light' ? 'neon' : 'light';
+            applyBrightnessTone(nextTone);
+            localStorage.setItem('ok_colorful_theme', nextTone);
+        }
+
+        function applyBrightnessTone(mode) {
+            currentToneMode = mode;
+            const body = document.body;
+            const textEl = document.getElementById('toneToggleText');
+            if (mode === 'neon') {
+                body.classList.add('aurora-neon-mode');
+                if (textEl) textEl.textContent = 'Giao diện: Aurora Neon';
+            } else {
+                body.classList.remove('aurora-neon-mode');
+                if (textEl) textEl.textContent = 'Giao diện: Sáng Rực Rỡ';
+            }
+        }
+
+        // --- 1. SHORTLINK API PRESETS ---
+        const API_PRESETS = {
+            link4m: {
+                name: 'Link4m.co',
+                template: 'https://link4m.co/st?api={api}&url={url}'
+            },
+            yeumoney: {
+                name: 'Yeumoney.com',
+                template: 'https://yeumoney.com/QL_api.php?token={api}&format=text&url={url}'
+            },
+            layma: {
+                name: 'Layma.net',
+                template: 'https://api.layma.net/api/admin/shortlink/quicklink?tokenUser={api}&url={url}&format=text'
+            },
+            traffic123: {
+                name: 'Traffic123.net',
+                template: 'https://traffic123.net/st?api={api}&url={url}'
+            },
+            link1s: {
+                name: 'Link1s.com',
+                template: 'https://link1s.com/st?api={api}&url={url}'
+            },
+            custom: {
+                name: 'Custom API',
+                template: 'https://your-shortener.com/st?api={api}&url={url}'
+            }
+        };
+
+        const DEFAULT_CONFIG = {
+            stepsRequired: 2,
+            step1Preset: 'link4m',
+            step1ApiToken: '',
+            step1ApiTemplate: 'https://link4m.co/st?api={api}&url={url}',
+            step2Preset: 'yeumoney',
+            step2ApiToken: '',
+            step2ApiTemplate: 'https://yeumoney.com/QL_api.php?token={api}&format=text&url={url}',
+            minSecondsPerStep: 15,
+            sequentialCheck: true,
+            oneTimeToken: true,
+            sessionBinding: true,
+            adminSecret: 'admin123',
+            ui: {
+                brandFirst: 'Sakura',
+                brandHighlight: 'Key',
+                headerTagBadge: 'CLOUD 24/7',
+                headerSubtitle: 'Hệ Thống Phân Phối Key Phần Mềm & Tiện Ích Tự Động',
+                headerStatusText: 'Máy Chủ: Trực Tuyến',
+                headerContactText: 'Hỗ Trợ',
+                headerContactUrl: 'https://t.me/',
+                headerLogoImage: '',
+                heroBadgeText: 'Cập Nhật Kho Key Mới Mỗi Ngày',
+                heroTitleFirst: 'Free Key',
+                heroTitleHighlight: 'Menu Game',
+                sectionHeadingText: 'Danh Sách Bản Phát Hành',
+                claimBtnText: 'Nhận Key Ngay',
+                downloadBtnText: 'Tải Xuống',
+                defaultDownloadUrl: 'https://t.me/',
+                outOfStockText: 'Tạm Hết Key',
+                footerLeftText: 'SakuraKey Portal — Hệ Thống Phân Phối Mã Kích Hoạt Tự Động',
+                footerRightText: '© 2026 SakuraKey Cloud. All Rights Reserved.'
+            }
+        };
+
+        const DEFAULT_GAMES = [
+            {
+                id: 'game_ff_ob46',
+                name: 'Free Fire OB46 Aimbot & Legit VIP',
+                category: 'Battle Royale',
+                desc: 'Aimbot Legit chuẩn tâm, hạn chế headshot bất thường; Hiển thị xếp hạng Thách Đấu & Auto Fire mượt; Tối ưu FPS & bảo vệ tài khoản chính 100%',
+                icon: 'fa-crosshairs',
+                imageUrl: '',
+                bannerUrl: DEFAULT_BANNERS.game_ff_ob46,
+                bannerFit: 'contain',
+                downloadUrl: 'https://t.me/',
+                keyType: 'onetime',
+                active: true,
+                keys: [
+                    'SAKURA-FF46-9921-X8A2',
+                    'SAKURA-FF46-4410-K9P1',
+                    'SAKURA-FF46-7732-M2L9',
+                    'SAKURA-FF46-1094-Q5W8',
+                    'SAKURA-FF46-6651-Z3N7'
+                ]
+            },
+            {
+                id: 'game_lq_s3',
+                name: 'Liên Quân Mobile S3 Pro',
+                category: 'MOBA 5v5',
+                desc: 'Góc nhìn rộng 3 nấc siêu mượt; Hiển thị thời gian hồi chiêu & bổ trợ; Tối ưu kết nối mạng chống giật lag',
+                icon: 'fa-dragon',
+                imageUrl: '',
+                bannerUrl: DEFAULT_BANNERS.game_lq_s3,
+                bannerFit: 'contain',
+                downloadUrl: 'https://t.me/',
+                keyType: '1h',
+                active: true,
+                keys: [
+                    'SAKURA-AOV1H-8812-H6J3',
+                    'SAKURA-AOV1H-2290-P4R7',
+                    'SAKURA-AOV1H-5541-T9Y2',
+                    'SAKURA-AOV1H-7123-D8F5'
+                ]
+            },
+            {
+                id: 'game_roblox_exec',
+                name: 'Roblox Blox Fruits Script Hub',
+                category: 'Sandbox / RPG',
+                desc: 'Key 24 giờ toàn cầu không giới hạn lượt nhập; Hỗ trợ Auto Farm Mastery, Sea Event & Auto Raid; Tương thích mọi giả lập & điện thoại',
+                icon: 'fa-cube',
+                imageUrl: '',
+                bannerUrl: DEFAULT_BANNERS.game_roblox_exec,
+                bannerFit: 'contain',
+                downloadUrl: 'https://t.me/',
+                keyType: 'shared',
+                active: true,
+                keys: [
+                    'SAKURA-RBX24H-GLOBAL-2026'
+                ]
+            },
+            {
+                id: 'game_pubg_macro',
+                name: 'PUBG Mobile Sensi & Smooth',
+                category: 'Tactical FPS',
+                desc: 'Cân bằng độ giật tâm ngắm tự động; Mở khóa 90/120 FPS mượt mà trên mọi thiết bị; Chế độ Legit an toàn tuyệt đối',
+                icon: 'fa-fire',
+                imageUrl: '',
+                bannerUrl: DEFAULT_BANNERS.game_pubg_macro,
+                bannerFit: 'contain',
+                downloadUrl: 'https://t.me/',
+                keyType: 'onetime',
+                active: true,
+                keys: [
+                    'SAKURA-PUBG-3310-N8B2',
+                    'SAKURA-PUBG-6429-V5C1',
+                    'SAKURA-PUBG-1892-X7Z9'
+                ]
+            }
+        ];
+
+        // --- 2. STATE VARIABLES ---
+        let appConfig = {};
+        let gamesList = [];
+        let securityLogs = [];
+        let usedTokenRegistry = new Set();
+        let browserEnvHash = '';
+        let activeSession = null;
+        let adminAuthenticated = false;
+        let secretKeyBuffer = '';
+
+        // Secret Logo Click Counter
+        let logoClickCount = 0;
+        let logoClickTimer = null;
+
+        // --- 3. INITIALIZATION ---
+        window.onload = function () {
+            initBrightnessTone();
+            initBrowserEnvHash();
+            loadAllDataFromStorage();
+            setupSecretKeyboardShortcut();
+            checkRecentClaimBanner();
+            renderAllViews();
+            checkIncomingCallbackUrl();
+        };
+
+        function initBrowserEnvHash() {
+            let stored = localStorage.getItem('ok_env_hash');
+            if (!stored) {
+                const rand = Array.from({ length: 10 }, () => Math.floor(Math.random() * 16).toString(16)).join('').toUpperCase();
+                stored = 'ENV-' + rand;
+                localStorage.setItem('ok_env_hash', stored);
+            }
+            browserEnvHash = stored;
+        }
+
+        function loadAllDataFromStorage() {
+            try {
+                const savedConfig = localStorage.getItem('ok_app_config');
+                if (savedConfig) {
+                    const parsed = JSON.parse(savedConfig);
+                    appConfig = {
+                        ...DEFAULT_CONFIG,
+                        ...parsed,
+                        ui: { ...DEFAULT_CONFIG.ui, ...(parsed.ui || {}) }
+                    };
+                } else {
+                    appConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+                }
+
+                const savedGames = localStorage.getItem('ok_games_list');
+                if (savedGames) {
+                    const parsedGames = JSON.parse(savedGames);
+                    // Ensure every existing game gets full-ratio banner support & downloadUrl
+                    gamesList = parsedGames.map(g => ({
+                        ...g,
+                        bannerUrl: g.bannerUrl || DEFAULT_BANNERS[g.id] || DEFAULT_BANNERS.fallback,
+                        bannerFit: g.bannerFit || 'contain',
+                        downloadUrl: g.downloadUrl !== undefined ? g.downloadUrl : (DEFAULT_CONFIG.ui.defaultDownloadUrl || 'https://t.me/')
+                    }));
+                } else {
+                    gamesList = JSON.parse(JSON.stringify(DEFAULT_GAMES));
+                }
+
+                const savedLogs = localStorage.getItem('ok_security_logs');
+                securityLogs = savedLogs ? JSON.parse(savedLogs) : [];
+
+                const savedUsedTokens = localStorage.getItem('ok_used_tokens');
+                if (savedUsedTokens) {
+                    usedTokenRegistry = new Set(JSON.parse(savedUsedTokens));
+                }
+
+                const savedSession = localStorage.getItem('ok_active_session');
+                if (savedSession) {
+                    activeSession = JSON.parse(savedSession);
+                }
+
+                if (sessionStorage.getItem('ok_admin_auth') === '1') {
+                    adminAuthenticated = true;
+                }
+            } catch (e) {
+                appConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+                gamesList = JSON.parse(JSON.stringify(DEFAULT_GAMES));
+                securityLogs = [];
+            }
+        }
+
+        function saveAllDataToStorage() {
+            try {
+                localStorage.setItem('ok_app_config', JSON.stringify(appConfig));
+                localStorage.setItem('ok_games_list', JSON.stringify(gamesList));
+                localStorage.setItem('ok_security_logs', JSON.stringify(securityLogs));
+                localStorage.setItem('ok_used_tokens', JSON.stringify(Array.from(usedTokenRegistry)));
+                if (activeSession) {
+                    localStorage.setItem('ok_active_session', JSON.stringify(activeSession));
+                } else {
+                    localStorage.removeItem('ok_active_session');
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function resetDefaultData() {
+            appConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+            gamesList = JSON.parse(JSON.stringify(DEFAULT_GAMES));
+            securityLogs = [];
+            usedTokenRegistry.clear();
+            activeSession = null;
+            saveAllDataToStorage();
+            renderAllViews();
+            showToast('Đã đặt lại dữ liệu mặc định!', 'success');
+        }
+
+        function renderAllViews() {
+            applyHomepageUiConfig();
+            renderUserGameGrid();
+            populateAdminConfigForm();
+            populateAdminUiForm();
+            renderAdminGamesList();
+            renderSecurityLogs();
+        }
+
+        // --- APPLY CUSTOMIZABLE HOMEPAGE UI CONFIG ---
+        function setTextIfPresent(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+        }
+
+        function applyHomepageUiConfig() {
+            const ui = (appConfig && appConfig.ui) ? appConfig.ui : DEFAULT_CONFIG.ui;
+
+            setTextIfPresent('uiHeaderBrandFirst', formatCleanText(ui.brandFirst || 'Sakura'));
+            setTextIfPresent('uiHeaderBrandHighlight', formatCleanText(ui.brandHighlight || 'Key'));
+            setTextIfPresent('uiHeaderTagBadge', formatCleanText(ui.headerTagBadge || 'CLOUD 24/7'));
+            setTextIfPresent('uiHeaderSubtitle', formatCleanText(ui.headerSubtitle || ''));
+            setTextIfPresent('uiHeaderStatusText', formatCleanText(ui.headerStatusText || 'Máy Chủ: Trực Tuyến'));
+
+            const contactBtn = document.getElementById('uiHeaderContactBtn');
+            const contactText = document.getElementById('uiHeaderContactText');
+            if (contactBtn && contactText && ui.headerContactText && ui.headerContactText.trim() !== '') {
+                contactText.textContent = formatCleanText(ui.headerContactText);
+                contactBtn.href = ui.headerContactUrl || '#';
+            }
+
+            const logoBox = document.getElementById('uiHeaderLogoBox');
+            if (logoBox) {
+                if (ui.headerLogoImage && ui.headerLogoImage.trim() !== '') {
+                    logoBox.innerHTML = `<img src="${escapeHtml(ui.headerLogoImage)}" alt="Logo" class="w-full h-full object-cover">`;
+                } else {
+                    logoBox.innerHTML = `<i class="fa-solid fa-gamepad"></i>`;
+                }
+            }
+
+            setTextIfPresent('uiHeroBadgeText', formatCleanText(ui.heroBadgeText || 'Cập Nhật Kho Key Mới Mỗi Ngày'));
+            setTextIfPresent('uiHeroTitleFirst', formatCleanText(ui.heroTitleFirst || 'Free Key'));
+            setTextIfPresent('uiHeroTitleHighlight', formatCleanText(ui.heroTitleHighlight || 'Menu Game'));
+            setTextIfPresent('uiSectionHeadingText', formatCleanText(ui.sectionHeadingText || 'Danh Sách Bản Phát Hành'));
+
+            setTextIfPresent('uiFooterLeftText', formatCleanText(ui.footerLeftText || 'SakuraKey Portal — Hệ Thống Phân Phối Mã Kích Hoạt Tự Động'));
+            setTextIfPresent('uiFooterRightText', formatCleanText(ui.footerRightText || '© 2026 SakuraKey Cloud. All Rights Reserved.'));
+        }
+
+        function populateAdminUiForm() {
+            const ui = (appConfig && appConfig.ui) ? appConfig.ui : DEFAULT_CONFIG.ui;
+            const fields = [
+                'brandFirst', 'brandHighlight', 'headerTagBadge', 'headerSubtitle',
+                'headerStatusText', 'headerContactText', 'headerContactUrl', 'headerLogoImage',
+                'heroBadgeText', 'heroTitleFirst', 'heroTitleHighlight',
+                'sectionHeadingText', 'claimBtnText', 'downloadBtnText', 'defaultDownloadUrl', 'outOfStockText',
+                'footerLeftText', 'footerRightText'
+            ];
+            fields.forEach(key => {
+                const el = document.getElementById('uiForm_' + key);
+                if (el) el.value = ui[key] !== undefined ? ui[key] : '';
+            });
+        }
+
+        function saveUiConfigFromForm() {
+            if (!appConfig.ui) appConfig.ui = { ...DEFAULT_CONFIG.ui };
+            const fields = [
+                'brandFirst', 'brandHighlight', 'headerTagBadge', 'headerSubtitle',
+                'headerStatusText', 'headerContactText', 'headerContactUrl', 'headerLogoImage',
+                'heroBadgeText', 'heroTitleFirst', 'heroTitleHighlight',
+                'sectionHeadingText', 'claimBtnText', 'downloadBtnText', 'defaultDownloadUrl', 'outOfStockText',
+                'footerLeftText', 'footerRightText'
+            ];
+            fields.forEach(key => {
+                const el = document.getElementById('uiForm_' + key);
+                if (el) {
+                    appConfig.ui[key] = el.value.trim();
+                }
+            });
+
+            saveAllDataToStorage();
+            applyHomepageUiConfig();
+            renderUserGameGrid();
+            showToast('Đã cập nhật giao diện trang chủ!', 'success');
+        }
+
+        // --- 4. SECRET ADMIN TRIGGERS (5 CLICKS ON LOGO, CTRL+SHIFT+X, OR TYPING "@admin") ---
+        function handleSecretLogoClick() {
+            logoClickCount++;
+            if (logoClickTimer) clearTimeout(logoClickTimer);
+            if (logoClickCount >= 5) {
+                logoClickCount = 0;
+                triggerAdminEntry();
+            } else {
+                logoClickTimer = setTimeout(() => {
+                    logoClickCount = 0;
+                }, 2200);
+            }
+        }
+
+        function setupSecretKeyboardShortcut() {
+            window.addEventListener('keydown', function (e) {
+                if (e.ctrlKey && e.shiftKey && (e.key === 'X' || e.key === 'x')) {
+                    e.preventDefault();
+                    triggerAdminEntry();
+                    return;
+                }
+                const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+                if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+                if (e.key && e.key.length === 1) {
+                    secretKeyBuffer = (secretKeyBuffer + e.key.toLowerCase()).slice(-10);
+                    if (secretKeyBuffer.endsWith('@admin') || secretKeyBuffer.endsWith('admin123')) {
+                        secretKeyBuffer = '';
+                        triggerAdminEntry();
+                    }
+                }
+            });
+        }
+
+        function triggerAdminEntry() {
+            if (adminAuthenticated) {
+                switchMainView('admin');
+            } else {
+                const modal = document.getElementById('adminLoginModal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => document.getElementById('adminSecretInput').focus(), 100);
+            }
+        }
+
+        function closeAdminLoginModal() {
+            const modal = document.getElementById('adminLoginModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function toggleSecretVisibility() {
+            const input = document.getElementById('adminSecretInput');
+            const icon = document.getElementById('secretEyeIcon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fa-regular fa-eye-slash text-xs';
+            } else {
+                input.type = 'password';
+                icon.className = 'fa-regular fa-eye text-xs';
+            }
+        }
+
+        function submitAdminSecretLogin() {
+            const pass = document.getElementById('adminSecretInput').value.trim();
+            const remember = document.getElementById('adminRememberSession').checked;
+            const validSecret = appConfig.adminSecret || 'admin123';
+
+            if (pass === validSecret) {
+                adminAuthenticated = true;
+                if (remember) {
+                    sessionStorage.setItem('ok_admin_auth', '1');
+                }
+                document.getElementById('adminSecretInput').value = '';
+                closeAdminLoginModal();
+                switchMainView('admin');
+                showToast('Xác thực quyền Quản trị thành công', 'success');
+            } else {
+                showToast('Mật khẩu quản trị không chính xác', 'error');
+            }
+        }
+
+        function logoutAdmin() {
+            adminAuthenticated = false;
+            sessionStorage.removeItem('ok_admin_auth');
+            switchMainView('user');
+            showToast('Đã thoát phiên Quản trị', 'info');
+        }
+
+        function switchMainView(view) {
+            const userView = document.getElementById('userView');
+            const adminView = document.getElementById('adminView');
+            const exitBtn = document.getElementById('exitAdminViewBtn');
+
+            if (view === 'admin' && adminAuthenticated) {
+                userView.classList.add('hidden');
+                adminView.classList.remove('hidden');
+                exitBtn.classList.remove('hidden');
+                exitBtn.classList.add('inline-flex');
+                renderSecurityLogs();
+            } else {
+                adminView.classList.add('hidden');
+                userView.classList.remove('hidden');
+                exitBtn.classList.add('hidden');
+                exitBtn.classList.remove('inline-flex');
+                renderUserGameGrid();
+            }
+        }
+
+        function switchAdminTab(tabName) {
+            const tabs = ['config', 'games', 'ui', 'logs'];
+            tabs.forEach(t => {
+                const panel = document.getElementById('adminTab_' + t);
+                const btn = document.getElementById('adminTabBtn_' + t);
+                if (!panel || !btn) return;
+                if (t === tabName) {
+                    panel.classList.remove('hidden');
+                    btn.className = 'px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 vibrant-primary-btn';
+                } else {
+                    panel.classList.add('hidden');
+                    btn.className = 'px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 vibrant-secondary-btn';
+                }
+            });
+        }
+
+        // --- 5. USER GAME BENTO GRID (FULL 1280x593 BANNER + CHECKMARK DESCRIPTIONS + DOWNLOAD BUTTON) ---
+        function handleDownloadGame(gameId) {
+            const game = gamesList.find(g => g.id === gameId);
+            const ui = (appConfig && appConfig.ui) ? appConfig.ui : DEFAULT_CONFIG.ui;
+            const targetUrl = (game && game.downloadUrl && game.downloadUrl.trim() !== '')
+                ? game.downloadUrl.trim()
+                : (ui.defaultDownloadUrl || '');
+
+            if (!targetUrl) {
+                showToast('Chưa cài đặt Link Tải Xuống cho mục này. Vui lòng cập nhật trong Bảng Quản Trị!', 'info');
+                return;
+            }
+            window.open(targetUrl, '_blank', 'noopener,noreferrer');
+            showToast(`Đang mở trang tải xuống cho "${game ? game.name : 'Game'}"...`, 'success');
+        }
+
+        function renderUserGameGrid() {
+            const grid = document.getElementById('userGameGrid');
+            const ui = (appConfig && appConfig.ui) ? appConfig.ui : DEFAULT_CONFIG.ui;
+            const stepsRequired = Number(appConfig.stepsRequired) === 2 ? 2 : 1;
+
+            // Update Hero Summary Stats
+            const totalActiveKeys = gamesList.reduce((acc, g) => acc + (g.active && g.keys ? g.keys.length : 0), 0);
+            document.getElementById('heroStatTotalGames').textContent = gamesList.length;
+            document.getElementById('heroStatTotalKeys').textContent = totalActiveKeys;
+            document.getElementById('heroStatStepMode').textContent = `${stepsRequired} Bước`;
+
+            document.getElementById('totalGamesCount').textContent = gamesList.length;
+
+            if (gamesList.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full glass-panel rounded-2xl p-10 text-center theme-text-muted text-xs sm:text-sm space-y-2">
+                        <i class="fa-solid fa-box-open text-2xl text-indigo-400 block"></i>
+                        <p>Chưa có bản phát hành nào trong danh sách.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const claimBtnLabel = formatCleanText(ui.claimBtnText || 'Nhận Key Ngay');
+            const downloadBtnLabel = formatCleanText(ui.downloadBtnText || 'Tải Xuống');
+            const outStockLabel = formatCleanText(ui.outOfStockText || 'Tạm Hết Key');
+
+            grid.innerHTML = gamesList.map(game => {
+                const keyCount = game.keys ? game.keys.length : 0;
+                const isAvailable = game.active && keyCount > 0;
+                const modeLabel = getKeyModeLabel(game.keyType);
+                const categoryName = formatCleanText(game.category || modeLabel);
+                const avatarHtml = renderAvatarHtml(game.icon, game.imageUrl);
+                const bannerSrc = getBannerUrlForGame(game);
+                const fitClass = (game.bannerFit === 'cover') ? 'object-cover' : 'object-contain';
+                const checkmarkDescHtml = renderDescriptionWithCheckmarks(game.desc);
+
+                return `
+                <div class="glass-card rounded-3xl overflow-hidden flex flex-col justify-between group">
+                    <div>
+                        <!-- Full Widescreen Banner Container (Exact 1280x593 / ~2.15:1 Aspect Ratio so 100% of screenshot is visible) -->
+                        <div class="relative w-full aspect-[1280/593] overflow-hidden bg-slate-950 border-b border-indigo-500/15">
+                            <!-- Ambient Blurred Backdrop so any image ratio fills smoothly without black bars -->
+                            <img src="${escapeHtml(bannerSrc)}" alt="" aria-hidden="true"
+                                class="absolute inset-0 w-full h-full object-cover blur-xl scale-110 opacity-45 pointer-events-none">
+
+                            <!-- Main Full-Frame Uncropped Banner Image -->
+                            <img src="${escapeHtml(bannerSrc)}" alt="${escapeHtml(game.name)}"
+                                class="relative z-10 w-full h-full ${fitClass} transition-transform duration-500 group-hover:scale-[1.015]"
+                                onerror="this.style.display='none'">
+
+                            <!-- Sleek Top Corner Status Badges -->
+                            <div class="absolute top-2.5 left-3 z-20 flex flex-wrap items-center gap-1.5 pointer-events-none">
+                                <span class="px-2.5 py-0.5 rounded-lg bg-slate-950/80 text-white border border-white/15 text-[10px] font-extrabold uppercase tracking-wider backdrop-blur-md shadow">
+                                    ${escapeHtml(categoryName)}
+                                </span>
+                                <span class="px-2 py-0.5 rounded-lg bg-indigo-600/90 text-white text-[10px] font-bold backdrop-blur-md shadow">
+                                    <i class="fa-solid fa-link mr-1"></i>${stepsRequired} Bước
+                                </span>
+                            </div>
+
+                            <div class="absolute top-2.5 right-3 z-20 pointer-events-none">
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold shadow backdrop-blur-md ${
+                                    isAvailable
+                                        ? 'bg-emerald-500/95 text-white'
+                                        : 'bg-rose-500/95 text-white'
+                                }">
+                                    ${isAvailable ? '● Sẵn Sàng' : '○ Tạm Hết'}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Game Header & Checkmark Descriptions Below Banner (Does not block screenshot!) -->
+                        <div class="p-5 pb-4 space-y-3.5">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white flex items-center justify-center text-lg shrink-0 shadow-md overflow-hidden">
+                                        ${avatarHtml}
+                                    </div>
+                                    <div class="min-w-0">
+                                        <h3 class="font-extrabold theme-text-main text-base sm:text-lg truncate">${escapeHtml(game.name)}</h3>
+                                        <div class="flex flex-wrap items-center gap-2 text-[11px] font-bold mt-0.5">
+                                            <span class="text-indigo-500 inline-flex items-center gap-1">
+                                                <i class="fa-regular fa-clock"></i> ${escapeHtml(modeLabel)}
+                                            </span>
+                                            <span class="theme-text-muted">•</span>
+                                            <span class="text-emerald-600 dark:text-emerald-400 font-mono">
+                                                Còn <strong>${keyCount}</strong> Key
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Description List with Green Checkmarks in Front -->
+                            <div class="theme-subbox rounded-2xl p-3.5 space-y-2">
+                                ${checkmarkDescHtml}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Footer: Download Button Next To Claim Key Button -->
+                    <div class="px-5 pb-5 pt-3 border-t border-indigo-500/10 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2.5">
+                        <!-- Download Button -->
+                        <button onclick="handleDownloadGame('${game.id}')"
+                            class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl vibrant-secondary-btn hover:border-indigo-500 font-extrabold text-xs transition flex items-center justify-center gap-2 shrink-0">
+                            <i class="fa-solid fa-download text-indigo-500"></i>
+                            <span>${escapeHtml(downloadBtnLabel)}</span>
+                        </button>
+
+                        <!-- Claim Key Button -->
+                        <button onclick="openGameKeyFlow('${game.id}')" ${!isAvailable ? 'disabled' : ''}
+                            class="flex-1 px-5 py-2.5 rounded-xl font-extrabold text-xs transition flex items-center justify-center gap-2 ${
+                                isAvailable
+                                    ? 'vibrant-primary-btn'
+                                    : 'bg-slate-400/20 text-slate-400 cursor-not-allowed'
+                            }">
+                            <i class="fa-solid fa-key"></i>
+                            <span>${isAvailable ? escapeHtml(claimBtnLabel) : escapeHtml(outStockLabel)}</span>
+                        </button>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // --- 6. STEALTH CRYPTOGRAPHIC SESSION & SHORTLINK FLOW ---
+        function computeSignature(payload) {
+            let h = 0x811c9dc5;
+            for (let i = 0; i < payload.length; i++) {
+                h ^= payload.charCodeAt(i);
+                h += (h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24);
+            }
+            return (h >>> 0).toString(16).toUpperCase().padStart(8, '0');
+        }
+
+        function generateSessionUid() {
+            if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+                return 'OK-' + window.crypto.randomUUID().split('-')[0].toUpperCase();
+            }
+            return 'OK-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+        }
+
+        function openGameKeyFlow(gameId) {
+            const game = gamesList.find(g => g.id === gameId);
+            if (!game || !game.active || !game.keys || game.keys.length === 0) {
+                showToast('Bản phát hành này hiện đã hết Key.', 'error');
+                return;
+            }
+
+            const sessionId = generateSessionUid();
+            const totalSteps = Number(appConfig.stepsRequired) === 2 ? 2 : 1;
+
+            activeSession = {
+                sessionId,
+                gameId: game.id,
+                gameName: formatCleanText(game.name),
+                gameIcon: game.icon,
+                gameImageUrl: game.imageUrl || '',
+                gameKeyType: game.keyType || 'onetime',
+                envHash: browserEnvHash,
+                totalSteps,
+                currentStep: 1,
+                stepStartedAt: null,
+                stepSignatures: {
+                    0: computeSignature(`${sessionId}:${browserEnvHash}:0`)
+                },
+                status: 'READY'
+            };
+
+            saveAllDataToStorage();
+            showUserKeyModalForActiveSession();
+        }
+
+        function restartCurrentGameSession() {
+            if (activeSession && activeSession.gameId) {
+                openGameKeyFlow(activeSession.gameId);
+            } else {
+                closeUserKeyModal();
+            }
+        }
+
+        function showUserKeyModalForActiveSession() {
+            if (!activeSession) return;
+
+            const modal = document.getElementById('userKeyModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            document.getElementById('modalGameTitle').textContent = formatCleanText(activeSession.gameName);
+            document.getElementById('modalGameIcon').innerHTML = renderAvatarHtml(activeSession.gameIcon, activeSession.gameImageUrl);
+            document.getElementById('modalSessionCode').textContent = `Mã Phiên: ${activeSession.sessionId}`;
+
+            renderModalStepper();
+
+            const stepActionState = document.getElementById('modalStepActionState');
+            const errorState = document.getElementById('modalSessionErrorState');
+            const successState = document.getElementById('modalKeySuccessState');
+
+            stepActionState.classList.add('hidden');
+            errorState.classList.add('hidden');
+            successState.classList.add('hidden');
+
+            if (activeSession.status === 'READY') {
+                stepActionState.classList.remove('hidden');
+                const step = activeSession.currentStep;
+                const total = activeSession.totalSteps;
+                const modeLabel = getKeyModeLabel(activeSession.gameKeyType);
+                document.getElementById('modalStepBadge').textContent = `Bước ${step} / ${total} • ${modeLabel}`;
+
+                const btn = document.getElementById('modalProceedBtn');
+                btn.disabled = false;
+
+                if (total === 1) {
+                    document.getElementById('modalInstructionTitle').textContent = 'Xác Nhận Liên Kết Để Mở Khóa Key';
+                    document.getElementById('modalProceedBtnText').textContent = 'Tiếp Tục Đến Trang Liên Kết';
+                } else {
+                    document.getElementById('modalInstructionTitle').textContent =
+                        step === 1 ? 'Bước 1: Hoàn Thành Liên Kết Thứ Nhất' : 'Bước 2: Hoàn Thành Liên Kết Cuối Để Mở Khóa Key';
+                    document.getElementById('modalProceedBtnText').textContent =
+                        step === 1 ? 'Mở Liên Kết Bước 1' : 'Mở Liên Kết Bước 2 (Nhận Key)';
+                }
+            } else if (activeSession.status === 'INVALID') {
+                errorState.classList.remove('hidden');
+            } else if (activeSession.status === 'COMPLETED') {
+                successState.classList.remove('hidden');
+                const modeLabel = getKeyModeLabel(activeSession.gameKeyType);
+                document.getElementById('modalSuccessBadgeText').textContent = `Hoàn Tất Xác Thực • ${modeLabel}`;
+                document.getElementById('modalUnlockedKeyText').textContent = activeSession.unlockedKey || '';
+            }
+        }
+
+        function renderModalStepper() {
+            const container = document.getElementById('modalStepper');
+            if (!activeSession) return;
+
+            const total = activeSession.totalSteps;
+            const steps = [];
+
+            steps.push({
+                label: 'Liên kết 1',
+                done: activeSession.currentStep > 1 || activeSession.status === 'COMPLETED',
+                current: activeSession.status === 'READY' && activeSession.currentStep === 1
+            });
+
+            if (total === 2) {
+                steps.push({
+                    label: 'Liên kết 2',
+                    done: activeSession.status === 'COMPLETED',
+                    current: activeSession.status === 'READY' && activeSession.currentStep === 2
+                });
+            }
+
+            steps.push({
+                label: 'Nhận Key',
+                done: activeSession.status === 'COMPLETED',
+                current: false
+            });
+
+            container.innerHTML = `
+                <div class="grid gap-2.5" style="grid-template-columns: repeat(${steps.length}, minmax(0, 1fr));">
+                    ${steps.map((st, idx) => {
+                        let cls = 'theme-subbox theme-text-muted';
+                        let badgeCls = 'bg-indigo-500/15 text-indigo-500';
+                        let dot = idx + 1;
+                        if (st.done) {
+                            cls = 'bg-emerald-500/15 border border-emerald-500/40 text-emerald-600 dark:text-emerald-400';
+                            badgeCls = 'bg-emerald-500 text-white';
+                            dot = '<i class="fa-solid fa-check"></i>';
+                        } else if (st.current) {
+                            cls = 'bg-indigo-500/15 border-2 border-indigo-500 theme-text-main';
+                            badgeCls = 'vibrant-primary-btn';
+                        }
+                        return `
+                            <div class="rounded-xl p-2.5 flex items-center gap-2.5 ${cls}">
+                                <span class="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-extrabold shrink-0 ${badgeCls}">${dot}</span>
+                                <span class="text-xs font-bold truncate">${st.label}</span>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function closeUserKeyModal() {
+            const modal = document.getElementById('userKeyModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // --- 7. REDIRECT TO CONFIGURED SHORTLINK API ---
+        async function handleProceedToShortlink() {
+            if (!activeSession || activeSession.status !== 'READY') return;
+
+            const step = activeSession.currentStep;
+            activeSession.stepStartedAt = Date.now();
+            const expectedSig = computeSignature(`${activeSession.sessionId}:${activeSession.envHash}:${step}:${activeSession.stepSignatures[step - 1]}`);
+            activeSession.expectedSig = expectedSig;
+            saveAllDataToStorage();
+
+            const baseUrl = window.location.origin + window.location.pathname;
+            const callbackUrl = `${baseUrl}?sid=${encodeURIComponent(activeSession.sessionId)}&step=${step}&token=${encodeURIComponent(expectedSig)}`;
+
+            const apiToken = (step === 1 ? appConfig.step1ApiToken : appConfig.step2ApiToken) || '';
+            const apiTemplate = (step === 1 ? appConfig.step1ApiTemplate : appConfig.step2ApiTemplate) || '';
+
+            if (!apiToken.trim()) {
+                showToast('Chưa cấu hình API Token vượt link trong Bảng Quản Trị. Bạn có thể bấm Test Callback trong Admin để thử nghiệm.', 'info');
+            }
+
+            const targetShortenerUrl = apiTemplate
+                .replace('{api}', encodeURIComponent(apiToken))
+                .replace('{url}', encodeURIComponent(callbackUrl));
+
+            const btn = document.getElementById('modalProceedBtn');
+            const btnText = document.getElementById('modalProceedBtnText');
+            btn.disabled = true;
+            btnText.textContent = 'Đang khởi tạo liên kết...';
+
+            try {
+                if (targetShortenerUrl.includes('/api') || targetShortenerUrl.includes('format=text')) {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 3500);
+                    const res = await fetch(targetShortenerUrl, { signal: controller.signal });
+                    clearTimeout(timeoutId);
+
+                    if (res.ok) {
+                        const textData = (await res.text()).trim();
+                        try {
+                            const jsonData = JSON.parse(textData);
+                            if (jsonData.shortenedUrl) {
+                                window.location.href = jsonData.shortenedUrl;
+                                return;
+                            }
+                        } catch (_) {
+                            if (textData.startsWith('http://') || textData.startsWith('https://')) {
+                                window.location.href = textData;
+                                return;
+                            }
+                        }
+                    }
+                }
+            } catch (_) {}
+
+            window.location.href = targetShortenerUrl;
+        }
+
+        // --- 8. AUTOMATIC CALLBACK DETECTOR & SILENT VERIFICATION ---
+        function checkIncomingCallbackUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const cbSessionId = params.get('sid') || params.get('session');
+            const cbStep = parseInt(params.get('step'), 10);
+            const cbSig = params.get('token') || params.get('sig');
+
+            if (!cbSessionId || isNaN(cbStep) || !cbSig) return;
+
+            try {
+                window.history.replaceState({}, document.title, window.location.pathname);
+            } catch (_) {}
+
+            processSilentCallbackVerification(cbSessionId, cbStep, cbSig);
+        }
+
+        function processSilentCallbackVerification(cbSessionId, cbStep, cbSig, bypassTimeForAdminPreview = false) {
+            if (!activeSession || activeSession.sessionId !== cbSessionId) {
+                addSecurityLog('Không xác định', cbSessionId, 'BLOCKED', 'Không tìm thấy phiên gốc hoặc khác trình duyệt khởi tạo');
+                showGenericInvalidModal(cbSessionId);
+                return;
+            }
+
+            if (appConfig.oneTimeToken && usedTokenRegistry.has(cbSessionId)) {
+                addSecurityLog(activeSession.gameName, cbSessionId, 'BLOCKED', 'Tái sử dụng mã phiên đã nhận Key (F5 / Replay)');
+                activeSession.status = 'INVALID';
+                saveAllDataToStorage();
+                showUserKeyModalForActiveSession();
+                return;
+            }
+
+            if (appConfig.sessionBinding && activeSession.envHash !== browserEnvHash) {
+                addSecurityLog(activeSession.gameName, cbSessionId, 'BLOCKED', 'Môi trường trình duyệt không khớp với phiên khởi tạo');
+                activeSession.status = 'INVALID';
+                saveAllDataToStorage();
+                showUserKeyModalForActiveSession();
+                return;
+            }
+
+            const expectedSig = computeSignature(`${activeSession.sessionId}:${activeSession.envHash}:${cbStep}:${activeSession.stepSignatures[cbStep - 1] || ''}`);
+            if (appConfig.sequentialCheck && (cbStep !== activeSession.currentStep || cbSig !== expectedSig)) {
+                addSecurityLog(activeSession.gameName, cbSessionId, 'BLOCKED', `Sai thứ tự bước hoặc chữ ký URL không hợp lệ (Bước ${cbStep})`);
+                activeSession.status = 'INVALID';
+                saveAllDataToStorage();
+                showUserKeyModalForActiveSession();
+                return;
+            }
+
+            const now = Date.now();
+            const startedAt = activeSession.stepStartedAt;
+            if (!bypassTimeForAdminPreview && !startedAt) {
+                addSecurityLog(activeSession.gameName, cbSessionId, 'BLOCKED', `Truy cập thẳng URL đích mà chưa bấm bắt đầu Bước ${cbStep}`);
+                activeSession.status = 'INVALID';
+                saveAllDataToStorage();
+                showUserKeyModalForActiveSession();
+                return;
+            }
+
+            const elapsedSec = startedAt ? Number(((now - startedAt) / 1000).toFixed(1)) : Number(appConfig.minSecondsPerStep) || 15;
+            const minSec = Number(appConfig.minSecondsPerStep) || 15;
+
+            if (!bypassTimeForAdminPreview && elapsedSec < minSec) {
+                addSecurityLog(
+                    activeSession.gameName,
+                    cbSessionId,
+                    'BLOCKED',
+                    `Hoàn thành Bước ${cbStep} quá nhanh (${elapsedSec}s < ${minSec}s quy định)`
+                );
+                activeSession.status = 'INVALID';
+                saveAllDataToStorage();
+                showUserKeyModalForActiveSession();
+                return;
+            }
+
+            activeSession.stepSignatures[cbStep] = cbSig;
+            activeSession.stepStartedAt = null;
+
+            if (cbStep < activeSession.totalSteps) {
+                activeSession.currentStep = cbStep + 1;
+                activeSession.status = 'READY';
+                saveAllDataToStorage();
+                showUserKeyModalForActiveSession();
+                showToast('Đã xác nhận Bước 1! Vui lòng tiếp tục Bước 2 để nhận Key.', 'info');
+            } else {
+                dispenseGameKeyForSession(elapsedSec);
+            }
+        }
+
+        function showGenericInvalidModal(sessionId) {
+            activeSession = {
+                sessionId: sessionId || 'UNKNOWN',
+                gameId: gamesList[0]?.id || '',
+                gameName: 'Thông Báo Hệ Thống',
+                gameIcon: 'fa-clock-rotate-left',
+                totalSteps: Number(appConfig.stepsRequired) || 1,
+                currentStep: 1,
+                status: 'INVALID'
+            };
+            showUserKeyModalForActiveSession();
+        }
+
+        function dispenseGameKeyForSession(lastElapsedSec) {
+            const game = gamesList.find(g => g.id === activeSession.gameId);
+            if (!game || !game.keys || game.keys.length === 0) {
+                showToast('Rất tiếc, kho Key của mục này vừa hết!', 'error');
+                return;
+            }
+
+            let issuedKey = '';
+            if (game.keyType === 'onetime') {
+                issuedKey = game.keys.shift();
+            } else {
+                issuedKey = game.keys[0];
+            }
+
+            activeSession.status = 'COMPLETED';
+            activeSession.unlockedKey = issuedKey;
+            activeSession.gameKeyType = game.keyType;
+            usedTokenRegistry.add(activeSession.sessionId);
+
+            localStorage.setItem('ok_recent_claim', JSON.stringify({
+                gameName: formatCleanText(game.name),
+                key: issuedKey,
+                time: Date.now()
+            }));
+
+            const modeLabel = getKeyModeLabel(game.keyType);
+            addSecurityLog(
+                formatCleanText(game.name),
+                activeSession.sessionId,
+                'SUCCESS',
+                `Hoàn tất ${activeSession.totalSteps} bước (${lastElapsedSec}s) [${modeLabel}] -> Cấp Key: ${issuedKey}`
+            );
+
+            saveAllDataToStorage();
+            checkRecentClaimBanner();
+            renderAllViews();
+            showUserKeyModalForActiveSession();
+            showToast(`Xác thực hoàn tất! Bạn đã nhận được ${modeLabel}.`, 'success');
+        }
+
+        // --- 9. ADMIN GAME, BANNER IMAGE & ICON MANAGEMENT ---
+        function handleImageFileUpload(fileInput, targetInputId, previewContainerId) {
+            const file = fileInput.files && fileInput.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (ev) {
+                const img = new Image();
+                img.onload = function () {
+                    const canvas = document.createElement('canvas');
+                    const maxSize = 160;
+                    let w = img.width;
+                    let h = img.height;
+                    if (w > h && w > maxSize) {
+                        h = Math.round((h * maxSize) / w);
+                        w = maxSize;
+                    } else if (h > maxSize) {
+                        w = Math.round((w * maxSize) / h);
+                        h = maxSize;
+                    }
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, w, h);
+                    const dataUrl = canvas.toDataURL('image/png', 0.9);
+
+                    const inputEl = document.getElementById(targetInputId);
+                    if (inputEl) inputEl.value = dataUrl;
+
+                    if (previewContainerId === 'newGameAvatarPreview') {
+                        previewNewGameAvatar();
+                    } else if (previewContainerId === 'editModalAvatarPreview') {
+                        previewEditGameAvatar();
+                    }
+                    showToast('Đã tải ảnh Icon lên thành công!', 'success');
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Dedicated Widescreen Banner File Upload (Preserves full original aspect ratio up to 1280px width without cropping)
+        function handleBannerFileUpload(fileInput, targetInputId, previewContainerId) {
+            const file = fileInput.files && fileInput.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (ev) {
+                const img = new Image();
+                img.onload = function () {
+                    const canvas = document.createElement('canvas');
+                    const maxW = 1280;
+                    const maxH = 720;
+                    let w = img.width;
+                    let h = img.height;
+                    if (w > maxW) {
+                        h = Math.round((h * maxW) / w);
+                        w = maxW;
+                    }
+                    if (h > maxH) {
+                        w = Math.round((w * maxH) / h);
+                        h = maxH;
+                    }
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, w, h);
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.88);
+
+                    const inputEl = document.getElementById(targetInputId);
+                    if (inputEl) inputEl.value = dataUrl;
+
+                    if (previewContainerId === 'newGameBannerPreview') {
+                        previewNewGameBanner();
+                    } else if (previewContainerId === 'editModalBannerPreview') {
+                        previewEditGameBanner();
+                    }
+                    showToast('Đã tải trọn vẹn ảnh Banner lên thành công!', 'success');
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function previewNewGameBanner() {
+            const bannerUrl = document.getElementById('newGameBannerUrl').value.trim();
+            const fitEl = document.getElementById('newGameBannerFit');
+            const fitClass = (fitEl && fitEl.value === 'cover') ? 'object-cover' : 'object-contain';
+            const preview = document.getElementById('newGameBannerPreview');
+            if (!preview) return;
+            if (bannerUrl) {
+                preview.innerHTML = `<img src="${escapeHtml(bannerUrl)}" alt="Banner Preview" class="w-full h-full ${fitClass}" onerror="this.parentElement.innerHTML='<span class=\\'text-xs text-white\\'>Không tải được ảnh Banner</span>'">`;
+            } else {
+                preview.innerHTML = `<img src="${escapeHtml(DEFAULT_BANNERS.fallback)}" alt="Default Banner" class="w-full h-full ${fitClass}">`;
+            }
+        }
+
+        function previewEditGameBanner() {
+            const bannerUrl = document.getElementById('editModalGameBannerUrl').value.trim();
+            const fitEl = document.getElementById('editModalGameBannerFit');
+            const fitClass = (fitEl && fitEl.value === 'cover') ? 'object-cover' : 'object-contain';
+            const preview = document.getElementById('editModalBannerPreview');
+            if (!preview) return;
+            if (bannerUrl) {
+                preview.innerHTML = `<img src="${escapeHtml(bannerUrl)}" alt="Banner Preview" class="w-full h-full ${fitClass}" onerror="this.parentElement.innerHTML='<span class=\\'text-xs text-white\\'>Không tải được ảnh Banner</span>'">`;
+            } else {
+                preview.innerHTML = `<img src="${escapeHtml(DEFAULT_BANNERS.fallback)}" alt="Default Banner" class="w-full h-full ${fitClass}">`;
+            }
+        }
+
+        function clearEditGameBanner() {
+            document.getElementById('editModalGameBannerUrl').value = '';
+            previewEditGameBanner();
+        }
+
+        function previewNewGameAvatar() {
+            const icon = document.getElementById('newGameIcon').value;
+            const imgUrl = document.getElementById('newGameImageUrl').value.trim();
+            const preview = document.getElementById('newGameAvatarPreview');
+            if (preview) {
+                preview.innerHTML = renderAvatarHtml(icon, imgUrl);
+            }
+        }
+
+        function previewEditGameAvatar() {
+            const icon = document.getElementById('editModalGameIcon').value;
+            const imgUrl = document.getElementById('editModalGameImageUrl').value.trim();
+            const preview = document.getElementById('editModalAvatarPreview');
+            if (preview) {
+                preview.innerHTML = renderAvatarHtml(icon, imgUrl);
+            }
+        }
+
+        function clearEditGameImage() {
+            document.getElementById('editModalGameImageUrl').value = '';
+            previewEditGameAvatar();
+        }
+
+        function fillSampleNewGameKeys() {
+            const prefix = 'SAKURA-' + Math.floor(1000 + Math.random() * 9000);
+            const sample = Array.from({ length: 5 }, () => {
+                const rand = Array.from({ length: 4 }, () => Math.floor(Math.random() * 16).toString(16)).join('').toUpperCase();
+                return `${prefix}-${rand}`;
+            }).join('\n');
+            document.getElementById('newGameKeys').value = sample;
+        }
+
+        function addNewGame() {
+            const rawName = document.getElementById('newGameName').value.trim();
+            const rawCategory = document.getElementById('newGameCategory').value.trim();
+            const rawDesc = document.getElementById('newGameDesc').value.trim() || 'Phiên bản cập nhật ổn định; An toàn tài khoản chính';
+            const downloadUrl = document.getElementById('newGameDownloadUrl').value.trim() || (appConfig.ui && appConfig.ui.defaultDownloadUrl) || 'https://t.me/';
+            const keyType = document.getElementById('newGameKeyType').value;
+            const icon = document.getElementById('newGameIcon').value;
+            const imageUrl = document.getElementById('newGameImageUrl').value.trim();
+            const bannerUrl = document.getElementById('newGameBannerUrl').value.trim() || DEFAULT_BANNERS.fallback;
+            const bannerFit = document.getElementById('newGameBannerFit') ? document.getElementById('newGameBannerFit').value : 'contain';
+            const rawKeys = document.getElementById('newGameKeys').value.trim();
+
+            if (!rawName) {
+                showToast('Vui lòng nhập tên bản Game!', 'error');
+                return;
+            }
+
+            const name = formatCleanText(rawName);
+            const category = formatCleanText(rawCategory || getKeyModeLabel(keyType));
+            const desc = formatCleanText(rawDesc);
+
+            const keysArray = rawKeys
+                ? rawKeys.split(/\r?\n/).map(k => k.trim()).filter(Boolean)
+                : [`SAKURA-${Math.floor(1000 + Math.random() * 9000)}-VIP`];
+
+            gamesList.unshift({
+                id: 'game_' + Date.now(),
+                name,
+                category,
+                desc,
+                downloadUrl,
+                icon,
+                imageUrl,
+                bannerUrl,
+                bannerFit,
+                keyType,
+                active: true,
+                keys: keysArray
+            });
+
+            saveAllDataToStorage();
+            renderAdminGamesList();
+            renderUserGameGrid();
+
+            document.getElementById('newGameName').value = '';
+            document.getElementById('newGameCategory').value = '';
+            document.getElementById('newGameDesc').value = '';
+            document.getElementById('newGameDownloadUrl').value = '';
+            document.getElementById('newGameImageUrl').value = '';
+            document.getElementById('newGameBannerUrl').value = '';
+            document.getElementById('newGameKeys').value = '';
+            previewNewGameAvatar();
+            previewNewGameBanner();
+
+            showToast(`Đã thêm "${name}" kèm Banner & Link Tải vào hệ thống!`, 'success');
+        }
+
+        function renderAdminGamesList() {
+            const container = document.getElementById('adminGamesList');
+            if (!container) return;
+
+            if (gamesList.length === 0) {
+                container.innerHTML = `<div class="text-center py-8 theme-text-muted text-xs">Chưa có mục nào.</div>`;
+                return;
+            }
+
+            container.innerHTML = gamesList.map(game => {
+                const keyCount = game.keys ? game.keys.length : 0;
+                const modeLabel = getKeyModeLabel(game.keyType);
+                const avatarHtml = renderAvatarHtml(game.icon, game.imageUrl);
+                const bannerSrc = getBannerUrlForGame(game);
+                const hasDownload = game.downloadUrl && game.downloadUrl.trim() !== '';
+
+                return `
+                <div class="theme-subbox rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="flex items-start gap-3.5 min-w-0">
+                        <!-- Mini Full-Aspect Banner + Icon Preview -->
+                        <div class="relative w-32 aspect-[1280/593] rounded-xl overflow-hidden bg-slate-950 shrink-0 shadow border border-indigo-500/20">
+                            <img src="${escapeHtml(bannerSrc)}" alt="Banner" class="w-full h-full object-contain" onerror="this.style.display='none'">
+                            <div class="absolute bottom-1 right-1 w-6 h-6 rounded-md bg-indigo-600/90 border border-white text-white flex items-center justify-center text-[10px] overflow-hidden shadow">
+                                ${avatarHtml}
+                            </div>
+                        </div>
+
+                        <div class="min-w-0">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <h4 class="font-extrabold theme-text-main text-sm truncate">${escapeHtml(game.name)}</h4>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-indigo-600 text-white">
+                                    ${escapeHtml(modeLabel)}
+                                </span>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${
+                                    game.active ? 'bg-emerald-500/15 text-emerald-500 border border-emerald-500/30' : 'bg-rose-500/15 text-rose-500 border border-rose-500/30'
+                                }">
+                                    ${game.active ? '● Hoạt Động' : '○ Tạm Ẩn'}
+                                </span>
+                            </div>
+                            <p class="text-xs theme-text-muted mt-0.5 truncate"><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>${escapeHtml(game.desc)}</p>
+                            <div class="text-xs theme-text-sub font-mono mt-1 flex flex-wrap items-center gap-2">
+                                <span>Tồn kho: <strong class="text-indigo-500">${keyCount}</strong> Key</span>
+                                <span>•</span>
+                                <span class="${hasDownload ? 'text-emerald-500' : 'theme-text-muted'}">
+                                    <i class="fa-solid fa-download mr-1"></i>${hasDownload ? 'Đã gắn Link Tải' : 'Dùng Link Tải Mặc Định'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2 shrink-0">
+                        <button onclick="openEditGameModal('${game.id}')"
+                            class="px-3 py-2 rounded-xl vibrant-secondary-btn text-xs font-bold">
+                            <i class="fa-regular fa-image text-indigo-500 mr-1"></i> Sửa Banner & Link Tải
+                        </button>
+                        <button onclick="openKeyListModal('${game.id}')"
+                            class="px-3 py-2 rounded-xl vibrant-primary-btn text-xs font-extrabold">
+                            <i class="fa-solid fa-key mr-1"></i> Kho Key
+                        </button>
+                        <button onclick="toggleGameActive('${game.id}')"
+                            class="px-3 py-2 rounded-xl vibrant-secondary-btn text-xs font-semibold">
+                            ${game.active ? 'Ẩn' : 'Hiện'}
+                        </button>
+                        <button onclick="deleteGame('${game.id}')"
+                            class="px-3 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 text-xs font-semibold transition">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function openEditGameModal(gameId) {
+            const game = gamesList.find(g => g.id === gameId);
+            if (!game) return;
+
+            document.getElementById('editModalGameId').value = game.id;
+            document.getElementById('editModalGameName').value = game.name || '';
+            document.getElementById('editModalGameCategory').value = game.category || '';
+            document.getElementById('editModalGameDesc').value = game.desc || '';
+            document.getElementById('editModalGameDownloadUrl').value = game.downloadUrl || '';
+            document.getElementById('editModalGameBannerFit').value = game.bannerFit || 'contain';
+            document.getElementById('editModalGameKeyType').value = game.keyType || 'onetime';
+            document.getElementById('editModalGameIcon').value = game.icon || 'fa-fire';
+            document.getElementById('editModalGameImageUrl').value = game.imageUrl || '';
+            document.getElementById('editModalGameBannerUrl').value = game.bannerUrl || '';
+
+            previewEditGameAvatar();
+            previewEditGameBanner();
+
+            const modal = document.getElementById('editGameModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeEditGameModal() {
+            const modal = document.getElementById('editGameModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function saveEditGameModal() {
+            const gameId = document.getElementById('editModalGameId').value;
+            const game = gamesList.find(g => g.id === gameId);
+            if (!game) return;
+
+            const name = formatCleanText(document.getElementById('editModalGameName').value);
+            if (!name) {
+                showToast('Tên Game không được để trống!', 'error');
+                return;
+            }
+
+            game.keyType = document.getElementById('editModalGameKeyType').value;
+            game.name = name;
+            game.category = formatCleanText(document.getElementById('editModalGameCategory').value || getKeyModeLabel(game.keyType));
+            game.desc = formatCleanText(document.getElementById('editModalGameDesc').value);
+            game.downloadUrl = document.getElementById('editModalGameDownloadUrl').value.trim();
+            game.bannerFit = document.getElementById('editModalGameBannerFit').value || 'contain';
+            game.icon = document.getElementById('editModalGameIcon').value;
+            game.imageUrl = document.getElementById('editModalGameImageUrl').value.trim();
+            game.bannerUrl = document.getElementById('editModalGameBannerUrl').value.trim() || DEFAULT_BANNERS[game.id] || DEFAULT_BANNERS.fallback;
+
+            saveAllDataToStorage();
+            renderAdminGamesList();
+            renderUserGameGrid();
+            closeEditGameModal();
+            showToast(`Đã cập nhật Banner, Link Tải & thông tin "${game.name}"!`, 'success');
+        }
+
+        function checkRecentClaimBanner() {
+            try {
+                const raw = localStorage.getItem('ok_recent_claim');
+                const banner = document.getElementById('recentClaimBanner');
+                if (!raw) {
+                    banner.classList.add('hidden');
+                    return;
+                }
+                const data = JSON.parse(raw);
+                document.getElementById('recentClaimGame').textContent = data.gameName;
+                document.getElementById('recentClaimKey').textContent = data.key;
+                banner.classList.remove('hidden');
+            } catch (_) {}
+        }
+
+        function copyModalKey() {
+            const keyText = document.getElementById('modalUnlockedKeyText').textContent.trim();
+            copyTextToClipboard(keyText);
+            const label = document.getElementById('modalCopyBtnLabel');
+            label.textContent = 'Đã Sao Chép!';
+            setTimeout(() => { label.textContent = 'Sao Chép Mã Key'; }, 2000);
+        }
+
+        function copyRecentKey() {
+            const keyText = document.getElementById('recentClaimKey').textContent.trim();
+            copyTextToClipboard(keyText);
+        }
+
+        function copyTextToClipboard(text) {
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast(`Đã sao chép: ${text}`, 'success');
+        }
+
+        // --- 10. ADMIN PANEL CONFIGURATION ---
+        function populateAdminConfigForm() {
+            selectAdminStepModeUI(Number(appConfig.stepsRequired));
+            document.getElementById('adminStep1Preset').value = appConfig.step1Preset;
+            document.getElementById('adminStep1Token').value = appConfig.step1ApiToken;
+            document.getElementById('adminStep1Template').value = appConfig.step1ApiTemplate;
+
+            document.getElementById('adminStep2Preset').value = appConfig.step2Preset;
+            document.getElementById('adminStep2Token').value = appConfig.step2ApiToken;
+            document.getElementById('adminStep2Template').value = appConfig.step2ApiTemplate;
+
+            document.getElementById('adminMinSeconds').value = appConfig.minSecondsPerStep;
+            document.getElementById('adminSequentialCheck').checked = !!appConfig.sequentialCheck;
+            document.getElementById('adminOneTimeToken').checked = !!appConfig.oneTimeToken;
+            document.getElementById('adminNewPasswordInput').value = appConfig.adminSecret || 'admin123';
+        }
+
+        function selectAdminStepMode(steps) {
+            appConfig.stepsRequired = Number(steps);
+            selectAdminStepModeUI(appConfig.stepsRequired);
+            saveAdminConfig(true);
+        }
+
+        function selectAdminStepModeUI(steps) {
+            const card1 = document.getElementById('modeCard1');
+            const card2 = document.getElementById('modeCard2');
+            const check1 = document.getElementById('modeCheck1');
+            const check2 = document.getElementById('modeCheck2');
+            const step2Card = document.getElementById('adminStep2ConfigCard');
+            const step2Tag = document.getElementById('step2StatusTag');
+
+            if (steps === 1) {
+                card1.className = 'cursor-pointer rounded-2xl p-5 border-2 border-indigo-500 transition flex items-start gap-4 theme-subbox shadow-md';
+                card2.className = 'cursor-pointer rounded-2xl p-5 border transition flex items-start gap-4 theme-subbox opacity-75';
+                check1.className = 'w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs';
+                check1.innerHTML = '<i class="fa-solid fa-check"></i>';
+                check2.className = 'w-5 h-5 rounded-full border border-indigo-400 flex items-center justify-center text-xs';
+                check2.innerHTML = '';
+
+                step2Card.classList.add('opacity-45');
+                step2Tag.textContent = '○ Đang tắt (Chế độ 1 Bước)';
+            } else {
+                card2.className = 'cursor-pointer rounded-2xl p-5 border-2 border-indigo-500 transition flex items-start gap-4 theme-subbox shadow-md';
+                card1.className = 'cursor-pointer rounded-2xl p-5 border transition flex items-start gap-4 theme-subbox opacity-75';
+                check2.className = 'w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs';
+                check2.innerHTML = '<i class="fa-solid fa-check"></i>';
+                check1.className = 'w-5 h-5 rounded-full border border-indigo-400 flex items-center justify-center text-xs';
+                check1.innerHTML = '';
+
+                step2Card.classList.remove('opacity-45');
+                step2Tag.textContent = '● Đang bật (Chế độ 2 Bước)';
+            }
+        }
+
+        function applyApiPreset(stepNumber, presetKey) {
+            const preset = API_PRESETS[presetKey];
+            if (!preset) return;
+            if (stepNumber === 1) {
+                document.getElementById('adminStep1Template').value = preset.template;
+            } else {
+                document.getElementById('adminStep2Template').value = preset.template;
+            }
+        }
+
+        function saveAdminConfig(silent = false) {
+            appConfig.step1Preset = document.getElementById('adminStep1Preset').value;
+            appConfig.step1ApiToken = document.getElementById('adminStep1Token').value.trim();
+            appConfig.step1ApiTemplate = document.getElementById('adminStep1Template').value.trim() || API_PRESETS.link4m.template;
+
+            appConfig.step2Preset = document.getElementById('adminStep2Preset').value;
+            appConfig.step2ApiToken = document.getElementById('adminStep2Token').value.trim();
+            appConfig.step2ApiTemplate = document.getElementById('adminStep2Template').value.trim() || API_PRESETS.yeumoney.template;
+
+            const minSec = parseInt(document.getElementById('adminMinSeconds').value, 10);
+            appConfig.minSecondsPerStep = isNaN(minSec) || minSec < 3 ? 15 : minSec;
+
+            appConfig.sequentialCheck = document.getElementById('adminSequentialCheck').checked;
+            appConfig.oneTimeToken = document.getElementById('adminOneTimeToken').checked;
+            appConfig.sessionBinding = document.getElementById('adminOneTimeToken').checked;
+
+            const newSecret = document.getElementById('adminNewPasswordInput').value.trim();
+            if (newSecret) {
+                appConfig.adminSecret = newSecret;
+            }
+
+            saveAllDataToStorage();
+            renderUserGameGrid();
+
+            if (silent) {
+                showToast(`Đã áp dụng chế độ Vượt ${appConfig.stepsRequired} Lần`, 'success');
+            } else {
+                showToast('Đã lưu cấu hình hệ thống thành công!', 'success');
+            }
+        }
+
+        function adminSimulateCallbackTest() {
+            const firstAvailableGame = gamesList.find(g => g.active && g.keys && g.keys.length > 0);
+            if (!firstAvailableGame) {
+                showToast('Không có game nào còn Key để test!', 'error');
+                return;
+            }
+            switchMainView('user');
+            openGameKeyFlow(firstAvailableGame.id);
+
+            const step = activeSession.currentStep;
+            activeSession.stepStartedAt = Date.now() - (Number(appConfig.minSecondsPerStep) + 5) * 1000;
+            const sig = computeSignature(`${activeSession.sessionId}:${activeSession.envHash}:${step}:${activeSession.stepSignatures[step - 1]}`);
+            processSilentCallbackVerification(activeSession.sessionId, step, sig, true);
+        }
+
+        function openKeyListModal(gameId) {
+            const game = gamesList.find(g => g.id === gameId);
+            if (!game) return;
+
+            document.getElementById('editingGameId').value = game.id;
+            document.getElementById('keyListModalTitle').textContent = `Kho Key: ${game.name}`;
+            const textarea = document.getElementById('modalKeyTextarea');
+            textarea.value = (game.keys || []).join('\n');
+            updateModalKeyCounter();
+            textarea.oninput = updateModalKeyCounter;
+
+            const modal = document.getElementById('keyListModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function updateModalKeyCounter() {
+            const raw = document.getElementById('modalKeyTextarea').value.trim();
+            const count = raw ? raw.split(/\r?\n/).map(k => k.trim()).filter(Boolean).length : 0;
+            document.getElementById('modalKeyCount').textContent = `Đang có: ${count} Key`;
+        }
+
+        function generateRandomKeysInModal() {
+            const textarea = document.getElementById('modalKeyTextarea');
+            const newKeys = Array.from({ length: 5 }, () => {
+                const seg1 = Math.floor(1000 + Math.random() * 9000);
+                const seg2 = Array.from({ length: 4 }, () => Math.floor(Math.random() * 16).toString(16)).join('').toUpperCase();
+                return `SAKURA-${seg1}-${seg2}`;
+            });
+            textarea.value = (textarea.value.trim() ? textarea.value.trim() + '\n' : '') + newKeys.join('\n');
+            updateModalKeyCounter();
+        }
+
+        function closeKeyListModal() {
+            const modal = document.getElementById('keyListModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function saveKeyListModal() {
+            const gameId = document.getElementById('editingGameId').value;
+            const game = gamesList.find(g => g.id === gameId);
+            if (!game) return;
+
+            const raw = document.getElementById('modalKeyTextarea').value.trim();
+            game.keys = raw ? raw.split(/\r?\n/).map(k => k.trim()).filter(Boolean) : [];
+
+            saveAllDataToStorage();
+            renderAdminGamesList();
+            renderUserGameGrid();
+            closeKeyListModal();
+            showToast(`Đã lưu ${game.keys.length} Key cho ${game.name}`, 'success');
+        }
+
+        function toggleGameActive(gameId) {
+            const game = gamesList.find(g => g.id === gameId);
+            if (!game) return;
+            game.active = !game.active;
+            saveAllDataToStorage();
+            renderAdminGamesList();
+            renderUserGameGrid();
+        }
+
+        function deleteGame(gameId) {
+            gamesList = gamesList.filter(g => g.id !== gameId);
+            saveAllDataToStorage();
+            renderAdminGamesList();
+            renderUserGameGrid();
+            showToast('Đã xóa bản game', 'info');
+        }
+
+        // --- 11. SILENT ADMIN LOGS ---
+        function addSecurityLog(gameName, tokenId, status, detail) {
+            const now = new Date();
+            const timeStr = now.toTimeString().split(' ')[0];
+            securityLogs.unshift({
+                time: timeStr,
+                gameName,
+                tokenId,
+                status,
+                detail
+            });
+            if (securityLogs.length > 60) securityLogs.pop();
+            saveAllDataToStorage();
+            renderSecurityLogs();
+        }
+
+        function renderSecurityLogs() {
+            const tbody = document.getElementById('securityLogsTableBody');
+            const successCount = securityLogs.filter(l => l.status === 'SUCCESS').length;
+            const blockedCount = securityLogs.filter(l => l.status === 'BLOCKED').length;
+
+            document.getElementById('statSuccessCount').textContent = successCount;
+            document.getElementById('statBlockedCount').textContent = blockedCount;
+            document.getElementById('adminTabLogCount').textContent = securityLogs.length;
+
+            if (!tbody) return;
+            if (securityLogs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center theme-text-muted">Chưa có dữ liệu nhật ký.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = securityLogs.map(log => {
+                const isBlocked = log.status === 'BLOCKED';
+                return `
+                <tr class="hover:bg-indigo-500/5">
+                    <td class="py-3 px-3 font-mono theme-text-muted whitespace-nowrap">${escapeHtml(log.time)}</td>
+                    <td class="py-3 px-3 font-bold theme-text-main">${escapeHtml(log.gameName)}</td>
+                    <td class="py-3 px-3 font-mono text-indigo-500 whitespace-nowrap">${escapeHtml(log.tokenId)}</td>
+                    <td class="py-3 px-3 whitespace-nowrap">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold ${
+                            isBlocked ? 'bg-rose-500/15 text-rose-500 border border-rose-500/30' : 'bg-emerald-500 text-white'
+                        }">
+                            ${isBlocked ? 'Từ chối ngầm' : 'Đã cấp Key'}
+                        </span>
+                    </td>
+                    <td class="py-3 px-3 theme-text-sub">${escapeHtml(log.detail)}</td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        function clearSecurityLogs() {
+            securityLogs = [];
+            saveAllDataToStorage();
+            renderSecurityLogs();
+            showToast('Đã làm trống nhật ký', 'info');
+        }
+
+        // --- 12. UTILITIES ---
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+
+            let borderCol = 'border-indigo-500';
+            let icon = 'fa-circle-info text-indigo-500';
+            if (type === 'success') {
+                borderCol = 'border-emerald-500';
+                icon = 'fa-circle-check text-emerald-500';
+            } else if (type === 'error') {
+                borderCol = 'border-rose-500';
+                icon = 'fa-circle-exclamation text-rose-500';
+            }
+
+            toast.className = `pointer-events-auto glass-panel border-l-4 ${borderCol} rounded-2xl p-3.5 shadow-2xl flex items-center gap-3 text-xs font-bold theme-text-main transition-all duration-300`;
+            toast.innerHTML = `
+                <i class="fa-solid ${icon} text-base shrink-0"></i>
+                <span class="flex-1 leading-snug">${escapeHtml(message)}</span>
+            `;
+
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3200);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+    </script>
+</body>
+</html>
