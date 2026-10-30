@@ -366,8 +366,8 @@
             <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
             <div class="flex items-center justify-between mb-4 border-b border-indigo-500/15 pb-3">
                 <div>
-                    <h3 class="text-lg font-extrabold theme-text-main">Chỉnh Sửa Ô Game, Ảnh Banner & Link Tải</h3>
-                    <p class="text-xs theme-text-muted">Thay đổi tên, chế độ Key, Link Tải Xuống và Ảnh Banner hiển thị trọn vẹn</p>
+                    <h3 class="text-lg font-extrabold theme-text-main">Chỉnh Sửa Ô Game, Mô Tả Tích Xanh & Banner</h3>
+                    <p class="text-xs theme-text-muted">Thay đổi tên, thêm/sửa nhiều dòng mô tả tích xanh, Link Tải Xuống và Ảnh Banner</p>
                 </div>
                 <button onclick="closeEditGameModal()" class="w-8 h-8 rounded-xl vibrant-secondary-btn flex items-center justify-center">
                     <i class="fa-solid fa-xmark"></i>
@@ -390,10 +390,27 @@
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-semibold theme-text-sub mb-1">Mô Tả Ngắn (Ngăn cách bằng dấu ; để tạo nhiều dòng tích xanh):</label>
-                    <input type="text" id="editModalGameDesc" placeholder="VD: Hỗ trợ tâm ngắm mượt; Tối ưu FPS; An toàn tài khoản"
-                        class="w-full theme-input rounded-xl px-3.5 py-2.5 text-xs outline-none">
+                <!-- MULTI-LINE DESCRIPTION EDITOR WITH LIVE CHECKMARK PREVIEW -->
+                <div class="theme-subbox rounded-2xl p-4 space-y-2.5">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <label class="block text-xs font-extrabold theme-text-main">
+                                <i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>Danh Sách Mô Tả Có Tích Xanh (Mỗi Dòng Là 1 Ý):
+                            </label>
+                            <p class="text-[11px] theme-text-muted">Nhấn <strong>Enter</strong> xuống dòng để viết thêm bao nhiêu dòng tùy ý</p>
+                        </div>
+                        <button type="button" onclick="appendDescLine('editModalGameDesc', 'editModalDescPreview')"
+                            class="px-2.5 py-1 rounded-lg vibrant-secondary-btn text-[11px] font-extrabold text-indigo-500 hover:border-indigo-500">
+                            <i class="fa-solid fa-plus mr-1"></i>Thêm Dòng Mới
+                        </button>
+                    </div>
+                    <textarea id="editModalGameDesc" rows="4" oninput="updateLiveDescPreview('editModalGameDesc', 'editModalDescPreview')"
+                        placeholder="Aimbot Legit chuẩn tâm, hạn chế headshot bất thường&#10;Hiển thị xếp hạng Thách Đấu & Auto Fire mượt&#10;Tối ưu FPS & bảo vệ tài khoản chính 100%"
+                        class="w-full theme-input rounded-xl p-3 text-xs leading-relaxed outline-none"></textarea>
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider theme-text-muted block mb-1.5">Xem Trước Khung Mô Tả Tích Xanh:</span>
+                        <div id="editModalDescPreview" class="glass-panel rounded-xl p-3 space-y-1.5"></div>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -956,10 +973,20 @@
                             </div>
                         </div>
 
-                        <div>
-                            <label class="block text-xs font-semibold theme-text-sub mb-1">Mô Tả (Có tích xanh ở trước, dùng dấu ; để tách dòng):</label>
-                            <input type="text" id="newGameDesc" placeholder="VD: Aimbot chuẩn tâm; Hiện xếp hạng sảnh chờ; An toàn 100%"
-                                class="w-full theme-input rounded-xl px-3.5 py-2.5 text-xs outline-none">
+                        <div class="theme-subbox rounded-xl p-3 space-y-2">
+                            <div class="flex items-center justify-between gap-2">
+                                <label class="block text-xs font-extrabold theme-text-main">
+                                    <i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>Mô Tả Có Tích Xanh (Mỗi Dòng 1 Ý):
+                                </label>
+                                <button type="button" onclick="appendDescLine('newGameDesc', 'newGameDescPreview')"
+                                    class="px-2 py-0.5 rounded-md vibrant-secondary-btn text-[10px] font-extrabold text-indigo-500">
+                                    + Thêm Dòng
+                                </button>
+                            </div>
+                            <textarea id="newGameDesc" rows="3" oninput="updateLiveDescPreview('newGameDesc', 'newGameDescPreview')"
+                                placeholder="Aimbot chuẩn tâm, hạn chế headshot&#10;Hiện xếp hạng sảnh chờ & Auto Fire&#10;Tối ưu FPS & bảo vệ tài khoản 100%"
+                                class="w-full theme-input rounded-xl p-2.5 text-xs leading-relaxed outline-none"></textarea>
+                            <div id="newGameDescPreview" class="glass-panel rounded-lg p-2.5 space-y-1.5"></div>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1077,7 +1104,7 @@
                         <div class="flex items-center justify-between border-b border-indigo-500/15 pb-3">
                             <div>
                                 <h3 class="text-base font-bold theme-text-main">Quản Lý Các Ô Game Hiện Có</h3>
-                                <p class="text-xs theme-text-muted">Bấm <strong>"Sửa Banner & Game"</strong> trên từng mục để thêm/thay đổi ảnh Banner nền, ảnh Icon hoặc nạp thêm Key</p>
+                                <p class="text-xs theme-text-muted">Bấm <strong>"Sửa Mô Tả & Banner"</strong> trên từng mục để sửa các dòng tích xanh, đổi ảnh Banner hoặc nạp thêm Key</p>
                             </div>
                         </div>
 
@@ -1332,23 +1359,47 @@
             return 'Key 1 Lần';
         }
 
-        // --- RENDER DESCRIPTION ITEMS WITH GREEN/BLUE VERIFIED CHECKMARK IN FRONT ---
-        function renderDescriptionWithCheckmarks(descText) {
+        // --- PARSE & RENDER MULTI-LINE DESCRIPTION ITEMS WITH GREEN VERIFIED CHECKMARK ---
+        function parseDescriptionLines(descText) {
             const raw = formatCleanText(descText || 'Phiên bản cập nhật ổn định, an toàn tài khoản');
             const parts = raw
                 .split(/\r?\n|;|\|/)
                 .map(s => s.trim())
                 .filter(Boolean);
+            return parts.length > 0 ? parts : [raw];
+        }
 
-            const items = parts.length > 0 ? parts : [raw];
+        function formatDescriptionForTextarea(descText) {
+            return parseDescriptionLines(descText).join('\n');
+        }
+
+        function renderDescriptionWithCheckmarks(descText) {
+            const items = parseDescriptionLines(descText);
             return items.map(item => `
-                <div class="flex items-start gap-2 text-xs theme-text-sub leading-relaxed">
+                <div class="flex items-start gap-2.5 text-xs theme-text-sub leading-relaxed">
                     <span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-emerald-500/15 text-emerald-500 shrink-0 mt-0.5 shadow-sm">
                         <i class="fa-solid fa-circle-check text-[13px]"></i>
                     </span>
                     <span class="font-medium">${escapeHtml(item)}</span>
                 </div>
             `).join('');
+        }
+
+        function updateLiveDescPreview(textareaId, previewId) {
+            const textarea = document.getElementById(textareaId);
+            const preview = document.getElementById(previewId);
+            if (!textarea || !preview) return;
+            const val = textarea.value.trim();
+            preview.innerHTML = renderDescriptionWithCheckmarks(val || 'Nhập nội dung mô tả ở trên (Mỗi dòng sẽ có 1 tích xanh)...');
+        }
+
+        function appendDescLine(textareaId, previewId) {
+            const textarea = document.getElementById(textareaId);
+            if (!textarea) return;
+            const current = textarea.value.trim();
+            textarea.value = current ? (current + '\nTính năng mới an toàn 100%') : 'Tính năng mới an toàn 100%';
+            textarea.focus();
+            updateLiveDescPreview(textareaId, previewId);
         }
 
         // --- VIBRANT BUILT-IN SVG GAMING BANNERS (EXACT 1280x593 WIDESCREEN RATIO) ---
@@ -1525,7 +1576,7 @@
                 id: 'game_ff_ob46',
                 name: 'Free Fire OB46 Aimbot & Legit VIP',
                 category: 'Battle Royale',
-                desc: 'Aimbot Legit chuẩn tâm, hạn chế headshot bất thường; Hiển thị xếp hạng Thách Đấu & Auto Fire mượt; Tối ưu FPS & bảo vệ tài khoản chính 100%',
+                desc: 'Aimbot Legit chuẩn tâm, hạn chế headshot bất thường\nHiển thị xếp hạng Thách Đấu & Auto Fire mượt\nTối ưu FPS & bảo vệ tài khoản chính 100%',
                 icon: 'fa-crosshairs',
                 imageUrl: '',
                 bannerUrl: DEFAULT_BANNERS.game_ff_ob46,
@@ -1545,7 +1596,7 @@
                 id: 'game_lq_s3',
                 name: 'Liên Quân Mobile S3 Pro',
                 category: 'MOBA 5v5',
-                desc: 'Góc nhìn rộng 3 nấc siêu mượt; Hiển thị thời gian hồi chiêu & bổ trợ; Tối ưu kết nối mạng chống giật lag',
+                desc: 'Góc nhìn rộng 3 nấc siêu mượt\nHiển thị thời gian hồi chiêu & bổ trợ\nTối ưu kết nối mạng chống giật lag',
                 icon: 'fa-dragon',
                 imageUrl: '',
                 bannerUrl: DEFAULT_BANNERS.game_lq_s3,
@@ -1564,7 +1615,7 @@
                 id: 'game_roblox_exec',
                 name: 'Roblox Blox Fruits Script Hub',
                 category: 'Sandbox / RPG',
-                desc: 'Key 24 giờ toàn cầu không giới hạn lượt nhập; Hỗ trợ Auto Farm Mastery, Sea Event & Auto Raid; Tương thích mọi giả lập & điện thoại',
+                desc: 'Key 24 giờ toàn cầu không giới hạn lượt nhập\nHỗ trợ Auto Farm Mastery, Sea Event & Auto Raid\nTương thích mọi giả lập & điện thoại',
                 icon: 'fa-cube',
                 imageUrl: '',
                 bannerUrl: DEFAULT_BANNERS.game_roblox_exec,
@@ -1580,7 +1631,7 @@
                 id: 'game_pubg_macro',
                 name: 'PUBG Mobile Sensi & Smooth',
                 category: 'Tactical FPS',
-                desc: 'Cân bằng độ giật tâm ngắm tự động; Mở khóa 90/120 FPS mượt mà trên mọi thiết bị; Chế độ Legit an toàn tuyệt đối',
+                desc: 'Cân bằng độ giật tâm ngắm tự động\nMở khóa 90/120 FPS mượt mà trên mọi thiết bị\nChế độ Legit an toàn tuyệt đối',
                 icon: 'fa-fire',
                 imageUrl: '',
                 bannerUrl: DEFAULT_BANNERS.game_pubg_macro,
@@ -1618,6 +1669,7 @@
             setupSecretKeyboardShortcut();
             checkRecentClaimBanner();
             renderAllViews();
+            updateLiveDescPreview('newGameDesc', 'newGameDescPreview');
             checkIncomingCallbackUrl();
         };
 
@@ -2573,7 +2625,7 @@
         function addNewGame() {
             const rawName = document.getElementById('newGameName').value.trim();
             const rawCategory = document.getElementById('newGameCategory').value.trim();
-            const rawDesc = document.getElementById('newGameDesc').value.trim() || 'Phiên bản cập nhật ổn định; An toàn tài khoản chính';
+            const rawDesc = document.getElementById('newGameDesc').value.trim() || 'Phiên bản cập nhật ổn định\nAn toàn tài khoản chính';
             const downloadUrl = document.getElementById('newGameDownloadUrl').value.trim() || (appConfig.ui && appConfig.ui.defaultDownloadUrl) || 'https://t.me/';
             const keyType = document.getElementById('newGameKeyType').value;
             const icon = document.getElementById('newGameIcon').value;
@@ -2589,7 +2641,7 @@
 
             const name = formatCleanText(rawName);
             const category = formatCleanText(rawCategory || getKeyModeLabel(keyType));
-            const desc = formatCleanText(rawDesc);
+            const desc = parseDescriptionLines(rawDesc).join('\n');
 
             const keysArray = rawKeys
                 ? rawKeys.split(/\r?\n/).map(k => k.trim()).filter(Boolean)
@@ -2623,8 +2675,9 @@
             document.getElementById('newGameKeys').value = '';
             previewNewGameAvatar();
             previewNewGameBanner();
+            updateLiveDescPreview('newGameDesc', 'newGameDescPreview');
 
-            showToast(`Đã thêm "${name}" kèm Banner & Link Tải vào hệ thống!`, 'success');
+            showToast(`Đã thêm "${name}" kèm ${parseDescriptionLines(desc).length} dòng mô tả tích xanh!`, 'success');
         }
 
         function renderAdminGamesList() {
@@ -2642,10 +2695,11 @@
                 const avatarHtml = renderAvatarHtml(game.icon, game.imageUrl);
                 const bannerSrc = getBannerUrlForGame(game);
                 const hasDownload = game.downloadUrl && game.downloadUrl.trim() !== '';
+                const descLinesCount = parseDescriptionLines(game.desc).length;
 
                 return `
                 <div class="theme-subbox rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div class="flex items-start gap-3.5 min-w-0">
+                    <div class="flex items-start gap-3.5 min-w-0 flex-1">
                         <!-- Mini Full-Aspect Banner + Icon Preview -->
                         <div class="relative w-32 aspect-[1280/593] rounded-xl overflow-hidden bg-slate-950 shrink-0 shadow border border-indigo-500/20">
                             <img src="${escapeHtml(bannerSrc)}" alt="Banner" class="w-full h-full object-contain" onerror="this.style.display='none'">
@@ -2654,11 +2708,14 @@
                             </div>
                         </div>
 
-                        <div class="min-w-0">
+                        <div class="min-w-0 flex-1">
                             <div class="flex flex-wrap items-center gap-2">
                                 <h4 class="font-extrabold theme-text-main text-sm truncate">${escapeHtml(game.name)}</h4>
                                 <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-indigo-600 text-white">
                                     ${escapeHtml(modeLabel)}
+                                </span>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
+                                    <i class="fa-solid fa-circle-check mr-0.5"></i>${descLinesCount} dòng mô tả
                                 </span>
                                 <span class="px-2 py-0.5 rounded text-[10px] font-bold ${
                                     game.active ? 'bg-emerald-500/15 text-emerald-500 border border-emerald-500/30' : 'bg-rose-500/15 text-rose-500 border border-rose-500/30'
@@ -2666,8 +2723,10 @@
                                     ${game.active ? '● Hoạt Động' : '○ Tạm Ẩn'}
                                 </span>
                             </div>
-                            <p class="text-xs theme-text-muted mt-0.5 truncate"><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>${escapeHtml(game.desc)}</p>
-                            <div class="text-xs theme-text-sub font-mono mt-1 flex flex-wrap items-center gap-2">
+                            <div class="mt-1.5 space-y-1">
+                                ${renderDescriptionWithCheckmarks(game.desc)}
+                            </div>
+                            <div class="text-xs theme-text-sub font-mono mt-2 flex flex-wrap items-center gap-2">
                                 <span>Tồn kho: <strong class="text-indigo-500">${keyCount}</strong> Key</span>
                                 <span>•</span>
                                 <span class="${hasDownload ? 'text-emerald-500' : 'theme-text-muted'}">
@@ -2680,7 +2739,7 @@
                     <div class="flex flex-wrap items-center gap-2 shrink-0">
                         <button onclick="openEditGameModal('${game.id}')"
                             class="px-3 py-2 rounded-xl vibrant-secondary-btn text-xs font-bold">
-                            <i class="fa-regular fa-image text-indigo-500 mr-1"></i> Sửa Banner & Link Tải
+                            <i class="fa-solid fa-pen-to-square text-indigo-500 mr-1"></i> Sửa Mô Tả & Banner
                         </button>
                         <button onclick="openKeyListModal('${game.id}')"
                             class="px-3 py-2 rounded-xl vibrant-primary-btn text-xs font-extrabold">
@@ -2707,7 +2766,7 @@
             document.getElementById('editModalGameId').value = game.id;
             document.getElementById('editModalGameName').value = game.name || '';
             document.getElementById('editModalGameCategory').value = game.category || '';
-            document.getElementById('editModalGameDesc').value = game.desc || '';
+            document.getElementById('editModalGameDesc').value = formatDescriptionForTextarea(game.desc || '');
             document.getElementById('editModalGameDownloadUrl').value = game.downloadUrl || '';
             document.getElementById('editModalGameBannerFit').value = game.bannerFit || 'contain';
             document.getElementById('editModalGameKeyType').value = game.keyType || 'onetime';
@@ -2715,6 +2774,7 @@
             document.getElementById('editModalGameImageUrl').value = game.imageUrl || '';
             document.getElementById('editModalGameBannerUrl').value = game.bannerUrl || '';
 
+            updateLiveDescPreview('editModalGameDesc', 'editModalDescPreview');
             previewEditGameAvatar();
             previewEditGameBanner();
 
@@ -2743,7 +2803,7 @@
             game.keyType = document.getElementById('editModalGameKeyType').value;
             game.name = name;
             game.category = formatCleanText(document.getElementById('editModalGameCategory').value || getKeyModeLabel(game.keyType));
-            game.desc = formatCleanText(document.getElementById('editModalGameDesc').value);
+            game.desc = parseDescriptionLines(document.getElementById('editModalGameDesc').value).join('\n');
             game.downloadUrl = document.getElementById('editModalGameDownloadUrl').value.trim();
             game.bannerFit = document.getElementById('editModalGameBannerFit').value || 'contain';
             game.icon = document.getElementById('editModalGameIcon').value;
@@ -2754,7 +2814,7 @@
             renderAdminGamesList();
             renderUserGameGrid();
             closeEditGameModal();
-            showToast(`Đã cập nhật Banner, Link Tải & thông tin "${game.name}"!`, 'success');
+            showToast(`Đã lưu ${parseDescriptionLines(game.desc).length} dòng mô tả tích xanh & cập nhật "${game.name}"!`, 'success');
         }
 
         function checkRecentClaimBanner() {
